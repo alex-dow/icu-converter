@@ -64,3 +64,9 @@ c.convert('/path/to/resourceBundle.txt');
 ```
 
 This will create a file located at `./output/resourceBundle.json`.
+
+## Limitations
+
+Only table, array, and string types are currently handled.
+The only available format is JSON.
+
