@@ -16,5 +16,5 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-peg');
 
-
+  grunt.registerTask('default', ['peg']);
 };
