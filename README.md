@@ -70,3 +70,6 @@ This will create a file located at `./output/resourceBundle.json`.
 Only table, array, and string types are currently handled.
 The only available format is JSON.
 
+## Release History
+* 2015-06-05	v0.0.2	Fixed an issue with JSON converter, where string resources were stored in an needed nested object
+* 2015-06-04	v0.0.1	Initial release

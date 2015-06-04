@@ -18,7 +18,7 @@ var Converter = function(rootKey, rootObject, options)
 
 Converter.prototype.writeFile = function() {
   this.convert();
-  var jsonStr = JSON.stringify(this.json);
+  var jsonStr = JSON.stringify(this.json, null, 4);
   
   var outputDir = this.options.outputDir;
   var outputFile = outputDir + "/" + path.basename(this.options.filename).replace(path.extname(this.options.filename), '') + ".json";
@@ -57,7 +57,7 @@ Converter.prototype.processTable = function(obj) {
     tbl[obj.keyName] = tblElements;
   } else {
 
-    if (obj.elements.type === "array") {
+    if (obj.elements.type === "array" || obj.elements.type === "string") {
       tbl = self.deferProcessing(obj.elements);
     } else {
       tbl[obj.keyName] = self.deferProcessing(obj.elements);
