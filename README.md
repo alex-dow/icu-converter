@@ -1,5 +1,5 @@
 # icu-converter
-version 0.0.1
+version 0.0.3
 
 icu-converter is a nodejs-based tool to convert ICU Resource Bundles into other formats.
 
@@ -41,7 +41,7 @@ bin/icu-converter.js --help
 Example usage:
 
 ```
-$ bin/icu-converter.js --format=json --output-dir=./output ./tests/fixtures/root.txt 
+$ bin/icu-converter.js --format=json --output-dir=./output ./tests/fixtures/root.txt
 > Processing: ./tests/fixtures/root.txt
 $
 ```
@@ -71,5 +71,6 @@ Only table, array, and string types are currently handled.
 The only available format is JSON.
 
 ## Release History
+* 2015-06-05  v0.0.3  Added preliminary properties file converter, and other bug fixes
 * 2015-06-05	v0.0.2	Fixed an issue with JSON converter, where string resources were stored in an needed nested object
 * 2015-06-04	v0.0.1	Initial release

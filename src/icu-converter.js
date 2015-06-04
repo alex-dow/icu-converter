@@ -30,9 +30,9 @@ icu_converter.prototype.convert = function(fileName) {
 
   var options = _.defaults({}, this.options, { filename: fileName });
 
-  var converter = new Converter(rootKey, rootValue, options);
+  var converter = new Converter(ast, options);
   converter.writeFile();
 
 };
 
-module.exports = icu_converter; 
+module.exports = icu_converter;

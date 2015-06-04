@@ -7,25 +7,24 @@ var cleanString = function(string) {
   return string.replace("\n", "\\n");
 }
 
-var Converter = function(rootKey, rootObject, options)
+var Converter = function(ast, options)
 {
-  this.rootKey = rootKey;
-  this.rootObject = rootObject;
+  this.rootObject = ast;
   this.options = options;
 
   this.json = {};
 }
 
 Converter.prototype.writeFile = function() {
-  this.convert();
-  var jsonStr = JSON.stringify(this.json, null, 4);
-  
+  var jsonObj = this.convert();
+  var jsonStr = JSON.stringify(jsonObj, null, 4);
+
   var outputDir = this.options.outputDir;
   var outputFile = outputDir + "/" + path.basename(this.options.filename).replace(path.extname(this.options.filename), '') + ".json";
 
   mkdirp(outputDir);
   fs.writeFileSync(outputFile, jsonStr);
-}
+};
 
 Converter.prototype.convert = function() {
   var res = {};
@@ -40,8 +39,7 @@ Converter.prototype.convert = function() {
     res = processedObject;
   }
 
-  this.json[this.rootKey] = res;
-  return this.json;
+  return res;
 };
 
 Converter.prototype.processTable = function(obj) {
@@ -56,7 +54,6 @@ Converter.prototype.processTable = function(obj) {
     });
     tbl[obj.keyName] = tblElements;
   } else {
-
     if (obj.elements.type === "array" || obj.elements.type === "string") {
       tbl = self.deferProcessing(obj.elements);
     } else {
@@ -73,11 +70,11 @@ Converter.prototype.processArray = function(obj) {
     res.push(self.deferProcessing(el));
   });
   return res;
-}
+};
 
 Converter.prototype.processString = function(obj) {
   return obj.value;
-}
+};
 
 Converter.prototype.deferProcessing = function(obj) {
   switch (obj.type) {
@@ -94,7 +91,6 @@ Converter.prototype.deferProcessing = function(obj) {
 };
 
 Converter.prototype.processObject = function(obj) {
-
   var self = this;
   var res;
   if (_.isArray(obj)) {
@@ -106,8 +102,8 @@ Converter.prototype.processObject = function(obj) {
     res = self.deferProcessing(obj);
   }
   return res;
-}
+};
 
-    
+
 
 module.exports = Converter;

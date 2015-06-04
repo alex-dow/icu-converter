@@ -1,6 +1,6 @@
 {
   "name": "icu-converter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Convert ICU resource bundles to other formats",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -29,8 +29,7 @@
   "dependencies": {
     "lodash": "3.9.3",
     "pegjs": "0.8.0",
-    "commander": "2.8.1",
-    "properties": "1.2.1"
+    "commander": "2.8.1"
   },
   "devDependencies": {
     "grunt": "^0.4.0",
