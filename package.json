@@ -1,0 +1,38 @@
+{
+  "name": "icu-converter",
+  "version": "0.0.1",
+  "description": "Convert ICU resource bundles to other formats",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alex-dow/icu-converter"
+  },
+  "main": "src/icu-converter",
+  "scripts": {
+    "icu-converter": "./bin/icu-converter"
+  },
+  "keywords": [
+    "icu",
+    "i18n",
+    "l10n",
+    "localization",
+    "internationalization",
+    "messageformat"
+  ],
+  "author": "Alex Dowgailenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alex-dow/icu-converter/issues"
+  },
+  "dependencies": {
+    "lodash": "3.9.3",
+    "pegjs": "0.8.0",
+    "commander": "2.8.1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.0",
+    "grunt-peg": "1.5.0"
+  }
+}

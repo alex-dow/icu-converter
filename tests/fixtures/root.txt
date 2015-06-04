@@ -1,0 +1,18 @@
+root {
+  en {
+    simple { "This is a simple message." }
+    plural { "This is a {0, plural
+              one { single result }
+              other { collection of results }}" }
+    multistuff {
+     { "this is a string" },
+     { "yet another string" },
+     { table {
+         foo { "haha" }
+     }}
+   }   
+  }
+  fr {
+    notre { "this is a simple message." }
+  }
+}

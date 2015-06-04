@@ -1,0 +1,117 @@
+/*
+* PEG version of the ICU ResourceBundle formal format
+*
+* [1] http://source.icu-project.org/repos/icu/icuhtml/trunk/design/bnf_rb.txt
+* 
+* 
+*/
+start
+  = keyName:bundleName ws "{" ws out:(resourceBundleStart)+ ws "}" ws {
+    var res = {
+      keyName: keyName,
+      type: "table",
+      elements: out
+    }
+    return res;
+    }
+
+resourceBundleStart
+  = keyName:bundleName st:resourceBundle {
+      var res = {};
+      res = {
+        keyName: keyName,
+        type: "table",
+        elements: st
+      };
+      return res;
+    }
+
+resourceBundle
+  = ":table"* ws "{" ws o:(tableFormat)+ ws "}" ws {
+      if (o.length === 1) {
+        return o[0];
+      } else {
+        return o;
+      }
+    }
+  / ":array"* ws "{" ws o:(arrayFormat)+ ws "}" ws {
+      if (o.length === 1) {
+        return o[0];
+      } else {
+        return o;
+      }
+    }
+    
+  / ":string"* ws "{" ws o:(stringFormat)+ ws "}" ws {
+      if (o.length === 1) {
+        return o[0];
+      } else {
+        return o;
+      }
+    }
+  / ws "{" ws "}" {
+      return {};
+    }
+
+tableFormat
+  = ws keyName:bundleName fld:resourceBundle+ ws {
+      var res = {
+        keyName: keyName,
+        type: "table",
+        elements: fld[0]
+     }
+ 
+     return res;
+    }
+
+arrayFormat
+  = ws o:resourceBundle ws remaining:(ws "," ws resourceBundle)+ ws {
+    var oa = [o];
+    remaining.forEach(function(item) {
+      oa.push(item[3]);
+    });
+    var res = {
+      type: "array",
+      value: oa
+    };
+    return res;
+    }
+  / ws o:resourceBundle {
+    var res = {
+      type: "array",
+      value: [o]
+    };
+    return res;
+    }
+
+
+stringFormat
+  = ws '"' ws o:chars ws '"' ws {
+      var res = {
+        type: "string",
+        value: o
+      }
+      return res;
+    }
+
+
+bundleName = chars:invariantChar+ {
+  if (chars && chars.length) {
+    return chars.join("");
+  } else {
+    return "";
+  }
+}
+
+invariantChar = [A-Za-z0-9\s\"\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\_]
+invariantChars = chars:invariantChar* { return chars.join(""); }
+
+hexDigit = [0-9A-Fa-f]
+number = sign? digit+
+sign = "-"
+digit = [0-9]
+
+char = [\x20-\x21\x23-\x5B\x5D-\u10FFFF\t\r\n]
+chars = chars:char* { return chars.join(""); }
+
+ws = [ \t\n\r]*
