@@ -65,10 +65,80 @@ c.convert('/path/to/resourceBundle.txt');
 
 This will create a file located at `./output/resourceBundle.json`.
 
-## Limitations
+## Missing Features
 
-Only table, array, and string types are currently handled.
-The only available format is JSON.
+1. Only `table`, `array`, and `string` types are handled. This means that `integer`, `intvector`, and `binary` are not supported.
+2. Aliasing and imports are not supported.
+
+## Limitations of the Properties format
+
+Properties files are somewhat supported now, but properties files are not as flexible as json.
+
+### Arrays
+
+```
+root {
+  array {
+    { "message" }
+    { "message" }
+    { "message" }
+  }
+}
+```
+
+Will be turned into:
+
+```
+root.array.0=message
+root.array.1=message
+root.array.2=message
+```
+
+### Arrays with complex elements
+
+If an element in an array is another array or table however, then this will not be properly represented in Properties files. The current behavior is to export it as JSON.
+
+```
+root {
+  array {
+    { "message" }
+    { newTable {
+      field { "message" }
+    }}
+  }
+}
+```
+
+Will be turned into
+
+```
+root.array.0=message
+root.array.1={ newTable: { field: "message" } }
+```
+
+### Strings on new lines
+
+If a string element spans multiple lines, then it will also be split on multiple lines in the properties file, with each line ending in a `\`
+
+```
+root {
+  message { "multi
+line
+message" }
+}
+```
+
+Will be turned into
+
+```
+root.message=multi \
+line \
+message
+```
+
+### What to expect in future versions
+All of this behavior is hard coded for now. It's planned to allow more functionality when handling data structures that property files do not handle.
+
 
 ## Release History
 * 2015-06-05  v0.0.3  Added preliminary properties file converter, and other bug fixes
