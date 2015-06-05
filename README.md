@@ -1,5 +1,5 @@
 # icu-converter
-version 0.0.3
+version 0.0.4
 
 icu-converter is a nodejs-based tool to convert ICU Resource Bundles into other formats.
 
@@ -50,6 +50,8 @@ This will generate a JSON file at `./output/root.json`.
 
 ## API
 
+### Generating Files
+
 Currently very simple. Example usage:
 
 ```javascript
@@ -60,10 +62,31 @@ var c = new Converter({
   outputDir: './output'
 });
 
-c.convert('/path/to/resourceBundle.txt');
+c.convertFile('/path/to/resourceBundle.txt');
 ```
 
 This will create a file located at `./output/resourceBundle.json`.
+
+### Converting to an Object
+
+To convert a resource bundle to a plain javascript object:
+
+```javascript
+var Converter = require('icu-converter');
+
+var c = new Converter({
+  format: 'json',
+  outputDir: './output'
+});
+
+var bundle = 'root { key { "stringValue" } }';
+
+var obj = c.parse(bundle);
+
+console.log(obj); // 'root { key { "stringValue" } }'
+```
+
+This will output `'root { key { "stringValue" } }'`
 
 ## Missing Features
 
@@ -141,6 +164,7 @@ All of this behavior is hard coded for now. It's planned to allow more functiona
 
 
 ## Release History
-* 2015-06-05  v0.0.3  Added preliminary properties file converter, and other bug fixes
-* 2015-06-05	v0.0.2	Fixed an issue with JSON converter, where string resources were stored in an needed nested object
-* 2015-06-04	v0.0.1	Initial release
+* 2015-06-05  v0.0.4  Bug fixes and improved architecture
+* 2015-06-04  v0.0.3  Added preliminary properties file converter, and other bug fixes
+* 2015-06-04	v0.0.2	Fixed an issue with JSON converter, where string resources were stored in an needed nested object
+* 2015-06-03	v0.0.1	Initial release
