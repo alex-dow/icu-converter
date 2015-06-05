@@ -1,7 +1,3 @@
 en {
-  plural { "There {0, plural,
-    one { is 1 result }
-    other { are {0} results }
-    } so enjoy!"
-  }
+  msgid { "msg id!" }
 }
