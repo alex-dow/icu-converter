@@ -29,7 +29,7 @@ var ICUConverter = function(opts) {
       'string',
       'table'
     ];
-}
+};
 
 
 function endsWith(str, suffix) {
