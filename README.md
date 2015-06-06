@@ -7,8 +7,8 @@ This project is in the early phases of development.
 
 ## Available Formats
 
-[Java-style Properties Format](http://en.wikipedia.org/wiki/.properties)
-[JSON](http://json.org/)
+* [Java-style Properties Format](http://en.wikipedia.org/wiki/.properties)
+* [JSON](http://json.org/)
 
 ## Why not genrb?
 
@@ -27,13 +27,13 @@ Remove the -g flag if you just want to use the library.
 ## CLI
 
 ```
-icu-converter.js --help
+icu-converter --help
 ```
 
 Example usage:
 
 ```
-$ icu-converter.js --format=json --output-dir=./output ./tests/fixtures/root.txt
+$ icu-converter --format=json --output-dir=./output ./tests/fixtures/root.txt
 > Processing: ./tests/fixtures/root.txt
 $
 ```
