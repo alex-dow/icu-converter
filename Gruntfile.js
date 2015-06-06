@@ -4,7 +4,16 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),    
+    pkg: grunt.file.readJSON('package.json'),
+    env: {
+      coverage: {
+        APP_DIR_FOR_CODE_COVERAGE: '../build/coverage/instrument/src'
+      }
+    },
+    clean: {
+      build: ['build/'],
+      peg: ['src/icu-format-parser.js']
+    },
     peg: {
       all: {
         src: "src/icu-pegjs.txt",
@@ -38,20 +47,45 @@ module.exports = function(grunt) {
           }
         }
       }
+    },
+
+    
+    mocha_istanbul: {
+      coverage: {
+        src: ['tests/**/*_test.js'],
+        options: {
+          coverageFolder: 'build/reports/coverage',
+          reportFormats: ['html', 'lcovonly', 'cobertura'],
+          mask: '*_test.js'
+        }
+      }
     }
+     
+
   });
 
+  grunt.loadNpmTasks('grunt-mocha-istanbul');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-peg');
+  grunt.loadNpmTasks('grunt-env');
+
+  grunt.registerTask('coverage', [
+    'mocha_istanbul'
+  ]);
 
   grunt.registerTask('test', [
     'jshint:all',
     'jscs',
-    'mochaTest'
+    'mochaTest:test'
   ]);
 
-  grunt.registerTask('default', ['peg', 'test']);
+  grunt.registerTask('prepare', [
+    'clean:build',
+    'clean:peg'
+  ]);
+
+  grunt.registerTask('default', ['prepare', 'peg', 'test', 'coverage']);
 };
