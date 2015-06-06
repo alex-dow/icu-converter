@@ -1,27 +1,50 @@
+'use strict';
+
 var _ = require('lodash');
 var fs = require('fs');
 var parser = require('./icu-format-parser');
+// var ASTObject = require('./icu-ast');
 
-'use strict';
-
-function icu_converter(opts) {
+function ICUConverter(opts) {
 
     var defaultOptions = {
         format: 'json',
         outputDir: '.',
         encoding: 'utf-8',
-        writerOptions: {
-        }
+        writerOptions: {} 
     };
 
     this.options = _.defaults({}, opts, defaultOptions);
+  
+    this.validTypes = [
+      'array',
+      'string',
+      'table'
+    ];
 }
 
-icu_converter.prototype.parse = function(grammar) {
+
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
+ICUConverter.prototype.parse = function(grammar) {
   return parser.parse(grammar);
-}
+};
 
-icu_converter.prototype.convertFile = function(fileName) {
+ICUConverter.prototype.parseKeyname = function(keyname) {
+
+  this.validTypes.forEach(function(type) {
+    var keyType = ':' + type;
+    if (endsWith(keyname, keyType)) {
+      keyname = keyname.substr(0, keyname.length - keyType.length);
+    }
+  });
+
+  return keyname;
+};
+
+ICUConverter.prototype.convertFile = function(fileName) {
 
   var grammar = fs.readFileSync(fileName, this.options.encoding);
 
@@ -29,48 +52,62 @@ icu_converter.prototype.convertFile = function(fileName) {
 
   var writer = require('./writers/' + this.options.format);
   writer(obj, fileName, this.options.outputDir, this.options.writerOptions);
-}
+};
 
-icu_converter.prototype.convert = function(grammar) {
+ICUConverter.prototype.convert = function(grammar) {
 
   var ast = this.parse(grammar);
 
-  var res = {};
-  var processedObject = this.processObject(ast);
+  var processedObject;
 
+  if (_.isArray(ast.elements)) {
+    processedObject = [];
+    var objects = {};
+    processedObject[this.parseKeyname(ast.keyName)] = {};
+    ast.elements.forEach(function(el) {
+      var obj = this.deferProcessing(el);
+      processedObject.push(obj);
+    }.bind(this));
+  } else {
+    var obj = this.deferProcessing(ast.elements);
+    processedObject = obj;
+  }
+
+  var res = {};
   if (_.isArray(processedObject)) {
     processedObject.forEach(function(obj) {
-      var key = _.keys(obj).pop();
+      var key = this.parseKeyname(_.keys(obj).pop());
       res[key] = obj[key];
-    });
+    }.bind(this));
   } else {
     res = processedObject;
   }
 
-  return res;
+  var returnValue = {};
+  returnValue[this.parseKeyname(ast.keyName)] = res;
+
+  return returnValue;
 };
 
-icu_converter.prototype.processTable = function(obj) {
-  var tbl = {};
+ICUConverter.prototype.processTable = function(obj) {
 
+  
+
+  var tbl = {};
   if (_.isArray(obj.elements)) {
     var tblElements = {};
-    tbl[obj.keyName] = {};
+    
     obj.elements.forEach(function(el) {
-      tblElements[el.keyName] = this.deferProcessing(el);
+      tbl[this.parseKeyname(el.keyName)] = this.deferProcessing(el);
     }.bind(this));
-    tbl[obj.keyName] = tblElements;
+
   } else {
-    if (obj.elements.type === "array" || obj.elements.type === "string") {
-      tbl = this.deferProcessing(obj.elements);
-    } else {
-      tbl[obj.keyName] = this.deferProcessing(obj.elements);
-    }
+    tbl[this.parseKeyname(obj.keyName)] = this.deferProcessing(obj.elements);
   }
   return tbl;
 };
 
-icu_converter.prototype.processArray = function(obj) {
+ICUConverter.prototype.processArray = function(obj) {
   var res = [];
   obj.value.forEach(function(el) {
     res.push(this.deferProcessing(el));
@@ -78,26 +115,30 @@ icu_converter.prototype.processArray = function(obj) {
   return res;
 };
 
-icu_converter.prototype.processString = function(obj) {
+ICUConverter.prototype.processString = function(obj) {
   return obj.value;
 };
 
 
-icu_converter.prototype.deferProcessing = function(obj) {
+ICUConverter.prototype.deferProcessing = function(obj) {
+  var returnValue;
   switch (obj.type) {
     case "table":
-      return this.processTable(obj);
+      returnValue = this.processTable(obj);
       break;
     case "string":
-      return this.processString(obj);
+      returnValue = this.processString(obj);
       break;
     case "array":
-      return this.processArray(obj);
+      returnValue = this.processArray(obj);
       break;
+    default:
+      throw new Error('Unknown type: ' + obj.type);
   }
+  return returnValue;
 };
 
-icu_converter.prototype.processObject = function(obj) {
+ICUConverter.prototype.processObject = function(obj) {
   var res;
   if (_.isArray(obj)) {
     res = [];
@@ -111,4 +152,4 @@ icu_converter.prototype.processObject = function(obj) {
   return res;
 };
 
-module.exports = icu_converter;
+module.exports = ICUConverter;
