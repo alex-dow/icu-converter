@@ -116,12 +116,9 @@ ICUConverter.prototype.processTable = function(obj) {
 
   var tbl = {};
   if (_.isArray(obj.elements)) {
-    var tblElements = {};
-    
     obj.elements.forEach(function(el) {
       tbl[this.parseKeyname(el.keyName)] = this.deferProcessing(el);
     }.bind(this));
-
   } else {
     tbl[this.parseKeyname(obj.keyName)] = this.deferProcessing(obj.elements);
   }
