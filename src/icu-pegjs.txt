@@ -3,7 +3,9 @@
 *
 * [1] http://source.icu-project.org/repos/icu/icuhtml/trunk/design/bnf_rb.txt
 * 
-* 
+* Copyright (c) 2015 Alex Dowgailenko
+* Licensed under the MIT License
+* https://github.com/alex-dow/icu-converter/blog/master/LICENSE
 */
 start
   = keyName:bundleName ws "{" ws out:(resourceBundleStart)+ ws "}" ws {

@@ -1,5 +1,5 @@
 # icu-converter
-version 0.0.5
+version 0.0.6-dev
 
 icu-converter is a nodejs-based tool to convert ICU Resource Bundles into other formats.
 
