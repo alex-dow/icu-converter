@@ -1,3 +1,6 @@
+[![build status](http://hq.psikon.net:20020/jenkins/job/icu-converter/badge/icon)](http://hq.psikon.net:20020/jenkins/job/icu-converter)
+[![npm version](https://badge.fury.io/js/icu-converter.svg)](http://badge.fury.io/js/icu-converter)
+
 # icu-converter
 version 0.0.6-dev
 
