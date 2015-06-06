@@ -2,7 +2,7 @@
 [![npm version](https://badge.fury.io/js/icu-converter.svg)](http://badge.fury.io/js/icu-converter)
 
 # icu-converter
-version 0.0.6-dev
+version 0.1.0-dev
 
 icu-converter is a nodejs-based tool to convert ICU Resource Bundles into other formats.
 
@@ -52,11 +52,25 @@ Valid values for format are:
 
 ### Converting a Resource Bundle to an Object
 
+From a file:
+
 ```javascript
-var converter = require('icu-converter').converter();
-var jsObj = converter.convertFile('/path/to/resourceBundle.txt');
+var converter = require('icu-converter').convertFile;
+var jsObj = converter('/path/to/resourceBundle.txt', {
+  encoding: 'utf-8'
+});
 
 console.log(require('util').inspect(jsObj, true, 10));
+```
+
+From a string:
+
+```javascript
+var converter = require('icu-converter').convert;
+var resource = "root { msgid { "string" } }";
+var jsObj = converter(resource);
+
+console.log(jsObj);
 ```
 
 ### Converting a Resource Bundle to Another Format
@@ -64,12 +78,14 @@ console.log(require('util').inspect(jsObj, true, 10));
 To convert a resource bundle to a JSON or Properties file format:
 
 ```javascript
-var converter = require('icu-converter').converter();
+var convertFile = require('icu-converter').convertFile;
 var getWriter = require('icu-converter').getWriter;
 
 var resourceFile = 'tests/fixtures/tables/table1.txt';
 
-var jsObj = converter.convertFile(resourceFile);
+var jsObj = convertFile(resourceFile, {
+  encoding: 'utf-8'
+});
 var jsonWriter = getWriter('json');
 var propertiesWriter = getWriter('properties');
 

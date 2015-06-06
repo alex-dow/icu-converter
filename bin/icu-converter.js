@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var converter = require('../src/icu-converter').converter;
+var convertFile = require('../src/icu-converter').convertFile;
 var writer = require('../src/icu-converter').getWriter;
 
 var program = require('commander');
@@ -17,7 +17,7 @@ program
 program.args.forEach(function(fn) {
   console.log("Processing: " + fn);
 
-  var jsObj = converter({encoding: program.encoding}).convertFile(fn);
+  var jsObj = convertFile(fn, {encoding: program.encoding});
   var formatWriter = writer(program.format);
 
   formatWriter(jsObj, fn, program.outputDir);

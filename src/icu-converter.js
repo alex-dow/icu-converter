@@ -14,8 +14,13 @@ var parser = require('./icu-format-parser');
 var ICUConverter = require('./converter');
 
 module.exports = {
-  converter: function(opts) {
-    return new ICUConverter(opts);
+  convert: function(opts) {
+    var c = new ICUConverter(opts);
+    return c.convert();
+  },
+  convertFile: function(fn, opts) {
+    var c = new ICUConverter(opts);
+    return c.convertFile(fn);
   },
   getWriter: function(format) {
     return require('./writers/' + format);
