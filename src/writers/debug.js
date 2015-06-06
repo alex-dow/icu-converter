@@ -9,9 +9,14 @@
 
 'use strict';
 
-var Writer = function(obj, inputFile, outputDir, argOptions) {
+/**
+ * A debug writer
+ *
+ * will just inspect the object and log it to stdout
+ */
+var Writer = function(obj) {
 
-  console.log("\n\n\n");
+  console.log('\n\n\n');
   console.log('--------------------------------------------');
   console.log('  Final convertered Javascript Object');
   console.log(' ');
