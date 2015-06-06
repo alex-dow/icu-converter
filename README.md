@@ -50,43 +50,37 @@ Valid values for format are:
 
 ## API
 
-### Generating Files
-
-Currently very simple. Example usage:
+### Converting a Resource Bundle to an Object
 
 ```javascript
-var Converter = require('icu-converter');
+var converter = require('icu-converter').converter();
+var jsObj = converter.convertFile('/path/to/resourceBundle.txt');
 
-var c = new Converter({
-  format: 'json',
-  outputDir: './output'
-});
-
-c.convertFile('/path/to/resourceBundle.txt');
+console.log(require('util').inspect(jsObj, true, 10));
 ```
 
-This will create a file located at `./output/resourceBundle.json`.
+### Converting a Resource Bundle to Another Format
 
-### Converting to an Object
-
-To convert a resource bundle to a plain javascript object:
+To convert a resource bundle to a JSON or Properties file format:
 
 ```javascript
-var Converter = require('icu-converter');
+var converter = require('icu-converter').converter();
+var getWriter = require('icu-converter').getWriter;
 
-var c = new Converter({
-  format: 'json',
-  outputDir: './output'
-});
+var resourceFile = 'tests/fixtures/tables/table1.txt';
 
-var bundle = 'root { key { "stringValue" } }';
+var jsObj = converter.convertFile(resourceFile);
+var jsonWriter = getWriter('json');
+var propertiesWriter = getWriter('properties');
 
-var obj = c.parse(bundle);
-
-console.log(obj); // 'root { key { "stringValue" } }'
+jsonWriter.writeFile(jsObj, resourceFile, './compiled');
+propertiesWriter.writeFile(jsObj, resourceFile, './compiled');
 ```
 
-This will output `'root { key { "stringValue" } }'`
+This will create two files:
+
+* `compiled/table.json`
+* `compiled/table.properties`
 
 ## Missing Features
 

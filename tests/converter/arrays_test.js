@@ -8,7 +8,7 @@
  */
 
 var expect = require('chai').expect;
-var ICUConverter = require('../../src/icu-converter');
+var ICUConverter = require('../../src/converter');
 var fs = require('fs');
 
 describe("Converter", function() {

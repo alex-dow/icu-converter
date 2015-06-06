@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-var Converter = require('../');
+var converter = require('../src/icu-converter').converter;
+var writer = require('../src/icu-converter').getWriter;
+
 var program = require('commander');
 var fs = require('fs');
 
@@ -12,17 +14,12 @@ program
   .option('-o --output-dir <dir>', 'Directory to output converted files')
   .parse(process.argv)
 
-var converter = new Converter({
-  encoding: program.encoding
-});
-
 program.args.forEach(function(fn) {
   console.log("Processing: " + fn);
-  var jsObj = converter.convertFile(fn);
 
-  var writerFormat = program.format;
-  var writer = require('../src/writers/' + writerFormat);
+  var jsObj = converter({encoding: program.encoding}).convertFile(fn);
+  var formatWriter = writer(program.format);
 
-  writer(jsObj, fn, program.outputDir);
+  formatWriter(jsObj, fn, program.outputDir);
 });
 

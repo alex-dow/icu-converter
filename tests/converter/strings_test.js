@@ -1,6 +1,6 @@
 describe("Converter", function() {
 
-  var ICUConverter = require('../../src/icu-converter');
+  var ICUConverter = require('../../src/converter');
   var fs = require('fs');
   var expect = require('chai').expect;
 
