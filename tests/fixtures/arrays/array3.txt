@@ -1,0 +1,9 @@
+root {
+  arrayitem {
+    { "string1" },
+    { tableitem {
+      fldname { "string2" }
+    }},
+    { "string3" }
+  }
+}

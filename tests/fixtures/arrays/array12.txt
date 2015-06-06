@@ -1,0 +1,6 @@
+root {
+  arrayitem:array {
+    { "string1" }
+  }
+}
+

@@ -1,0 +1,11 @@
+root {
+  object {
+    arrayitem {
+      { "string1" },
+      { "string2" },
+      { tableitem {
+        fldname { "string3" }
+      }}
+    }
+  }
+}

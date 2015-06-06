@@ -1,0 +1,11 @@
+root {
+  arrayitem {
+    { "string1" },
+    { "string2" },
+    {
+      { "string1" },
+      { "string2" },
+      { "string3" }
+    }
+  }
+}

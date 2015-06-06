@@ -17,13 +17,12 @@ var Writer = function(obj, inputFile, outputDir, argOptions) {
 
   var outputFileName = inputFileName.replace(fileExtension, '.json');
   var outputFile = outputDir + '/' + outputFileName;
-
   mkdirp(outputDir);
 
   var optsArray = [obj, options.replacer, options.space];
   var jsonStr = JSON.stringify.apply(JSON, optsArray);
   fs.writeFileSync(outputFile, jsonStr);
-}
+};
 
 
 module.exports = Writer;

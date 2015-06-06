@@ -35,6 +35,7 @@
     "grunt": "^0.4.0",
     "grunt-peg": "1.5.0",
     "grunt-mocha-test": "0.12.7",
+    "grunt-contrib-clean": "*",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-jscs": "^1.0.0",
     "chai": "3.0.0"
