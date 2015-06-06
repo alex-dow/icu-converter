@@ -18,9 +18,6 @@ var converter = new Converter({
 program.args.forEach(function(fn) {
   console.log("Processing: " + fn);
 
-//  var res = fs.readFileSync(fn, 'utf-8');
-  var res = 'root { key { "stringValue" } }';
-  console.log(require('util').inspect(res, true, 10));
-  // var results = converter.convertFile(fn);
+  converter.convertFile(fn);
 
 });
