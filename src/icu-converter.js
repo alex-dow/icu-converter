@@ -136,11 +136,26 @@ ICUConverter.prototype.processArray = function(obj) {
   return res;
 };
 
+ICUConverter.prototype.processMultilineString = function(str) {
+  var lines = str.split("\n");
+  var newString = [];
+  for (var i = 0; i < lines.length; i++) {
+    newString.push(lines[i].trim());
+  }
+  return newString.join('\n');
+};
+
 /**
  * Process a string element
  */
 ICUConverter.prototype.processString = function(obj) {
-  return obj.value;
+
+  var str = obj.value;  
+
+  if (str.indexOf("\n") !== -1) {
+    str = this.processMultilineString(str);
+  }
+  return str;
 };
 
 /**
