@@ -41,8 +41,8 @@ module.exports = function(grunt) {
         src: ['src/**/*.js', '!src/icu-format-parser.js'],
         options: {
           jshintrc: '.jshintrc',
-          reporter: 'jslint',
-          reporterOutput: 'build/reports/jshint.xml'
+          reporter: require('jshint-jenkins-checkstyle-reporter'),
+          reporterOutput: 'build/reports/report-jshint-checkstyle.xml'
         }
       }
     },
