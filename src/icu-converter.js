@@ -11,15 +11,16 @@
 var _ = require('lodash');
 var fs = require('fs');
 var parser = require('./icu-format-parser');
-// var ASTObject = require('./icu-ast');
 
+/**
+ * ICU Converter
+ *
+ * Converts a resource bundle to a Javascript object
+ */
 var ICUConverter = function(opts) {
 
     var defaultOptions = {
-        format: 'json',
-        outputDir: '.',
-        encoding: 'utf-8',
-        writerOptions: {} 
+        encoding: 'utf-8'
     };
 
     this.options = _.defaults({}, opts, defaultOptions);
@@ -31,15 +32,25 @@ var ICUConverter = function(opts) {
     ];
 };
 
-
+/**
+ * Checks to see if a string ends with a particular suffix
+ */
 function endsWith(str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
-ICUConverter.prototype.parse = function(grammar) {
-  return parser.parse(grammar);
+/**
+ * Parse a resource bundle
+ */
+ICUConverter.prototype.parse = function(resourceBundle) {
+  return parser.parse(resourceBundle);
 };
 
+/**
+ * Parses a key name.
+ * 
+ * If the keyname ends in :[datatype] then it is removed
+ */
 ICUConverter.prototype.parseKeyname = function(keyname) {
 
   this.validTypes.forEach(function(type) {
@@ -52,19 +63,23 @@ ICUConverter.prototype.parseKeyname = function(keyname) {
   return keyname;
 };
 
+/**
+ * Convert the contents of a file and write it to output dir
+ */
 ICUConverter.prototype.convertFile = function(fileName) {
 
   var grammar = fs.readFileSync(fileName, this.options.encoding);
 
-  var obj = this.convert(grammar);
+  return this.convert(grammar);
 
-  var writer = require('./writers/' + this.options.format);
-  writer(obj, fileName, this.options.outputDir, this.options.writerOptions);
 };
 
-ICUConverter.prototype.convert = function(grammar) {
+/**
+ * Convert a resource bundle to a javascript object
+ */
+ICUConverter.prototype.convert = function(resourceBundle) {
 
-  var ast = this.parse(grammar);
+  var ast = this.parse(resourceBundle);
 
   var processedObject;
 
@@ -94,9 +109,10 @@ ICUConverter.prototype.convert = function(grammar) {
   return returnValue;
 };
 
+/**
+ * Process a table element
+ */
 ICUConverter.prototype.processTable = function(obj) {
-
-  
 
   var tbl = {};
   if (_.isArray(obj.elements)) {
@@ -112,6 +128,9 @@ ICUConverter.prototype.processTable = function(obj) {
   return tbl;
 };
 
+/**
+ * Process an array element
+ */
 ICUConverter.prototype.processArray = function(obj) {
   var res = [];
   obj.value.forEach(function(el) {
@@ -120,11 +139,16 @@ ICUConverter.prototype.processArray = function(obj) {
   return res;
 };
 
+/**
+ * Process a string element
+ */
 ICUConverter.prototype.processString = function(obj) {
   return obj.value;
 };
 
-
+/**
+ * Take an element, and process it using the appropriate method for that element's type
+ */
 ICUConverter.prototype.deferProcessing = function(obj) {
   var returnValue;
   switch (obj.type) {
@@ -141,20 +165,6 @@ ICUConverter.prototype.deferProcessing = function(obj) {
       throw new Error('Unknown type: ' + obj.type);
   }
   return returnValue;
-};
-
-ICUConverter.prototype.processObject = function(obj) {
-  var res;
-  if (_.isArray(obj)) {
-    res = [];
-    obj.forEach(function(o) {
-      res.push(this.deferProcessing(o));
-    }.bind(this));
-
-  } else {
-    res = this.deferProcessing(obj);
-  }
-  return res;
 };
 
 module.exports = ICUConverter;
