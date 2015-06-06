@@ -6,7 +6,9 @@ version 0.1.0-dev
 
 icu-converter is a nodejs-based tool to convert ICU Resource Bundles into other formats.
 
-This project is in the early phases of development.
+* Sonar: http://hq.psikon.net:20010/dashboard/index?id=icu-converter
+* Jenkins: http://hq.psikon.net:20020/jenkins/job/icu-converter/
+* NPM: https://www.npmjs.com/package/icu-converter
 
 ## Available Formats
 
@@ -26,6 +28,17 @@ npm install -g icu-converter
 ```
 
 Remove the -g flag if you just want to use the library.
+
+If you want bleeding edge code with no promises then clone the `develop` branch. You should also install the grunt-cli tool to run the build.
+
+```
+git clone https://github.com/alex-dow/icu-converter.git
+cd icu-converter
+git checkout develop
+npm install
+sudo npm install -g grunt-cli
+grunt
+```
 
 ## CLI
 
@@ -172,6 +185,12 @@ message
 ### What to expect in future versions
 All of this behavior is hard coded for now. It's planned to allow more functionality when handling data structures that property files do not handle.
 
+
+## Contributing
+
+If you want to submit changes to the PEG file itself, then there must be extensive unit tests done to ensure that it works. Create fixtures for numerous examples and place in `tests/fixtures` and create tests for them.
+
+Please respect the `.editorconfig`, `.jshintrc`, and `.jscsrc` files.
 
 ## Release History
 * 2015-06-06  v0.0.5  Bug fixes, better array handling, and starting the unit tests
