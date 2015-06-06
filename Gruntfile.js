@@ -36,6 +36,14 @@ module.exports = function(grunt) {
         options: {
           jshintrc: '.jshintrc'
         }
+      },
+      report: {
+        src: ['src/**/*.js', '!src/icu-format-parser.js'],
+        options: {
+          jshintrc: '.jshintrc',
+          reporter: 'jslint',
+          reporterOutput: 'build/reports/jshint.xml'
+        }
       }
     },
     jscs: {
@@ -59,6 +67,13 @@ module.exports = function(grunt) {
           mask: '*_test.js'
         }
       }
+    },
+    
+    sloccount: {
+      options: {
+        reportPath: 'build/reports/sloc.sc'
+      },
+      src: ['src/**/*.js']
     }
      
 
@@ -71,6 +86,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-peg');
   grunt.loadNpmTasks('grunt-env');
+  grunt.loadNpmTasks('grunt-sloccount');
+
+  grunt.registerTask('reports', [
+    'coverage',
+    'sloccount',
+    'jshint:report'
+  ]);
 
   grunt.registerTask('coverage', [
     'mocha_istanbul'
@@ -87,5 +109,5 @@ module.exports = function(grunt) {
     'clean:peg'
   ]);
 
-  grunt.registerTask('default', ['prepare', 'peg', 'test', 'coverage']);
+  grunt.registerTask('default', ['prepare', 'peg', 'test', 'reports']);
 };
