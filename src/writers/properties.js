@@ -15,8 +15,8 @@ var mkdirp = require('mkdirp');
 var fs = require('fs');
 
 function processString(str) {
-  str = str.replace(/\n/g, '\\\n');
-  str = str.replace(/\r/g, '\\\r');
+  str = str.replace(/\n/g, ' \\\n');
+  str = str.replace(/\r/g, ' \\\r');
   return str;
 }
 
@@ -82,7 +82,7 @@ var Writer = function(obj, inputFile, outputDir, argOptions) {
 
   var defaultOptions = {};
 
-  this.options = _.defaults({}, argOptions, defaultOptions);
+  var options = _.defaults({}, argOptions, defaultOptions);
 
   var inputFileName = path.basename(inputFile);
   var fileExtension = path.extname(inputFileName);
