@@ -13,7 +13,7 @@ var fs = require('fs');
 var parser = require('./icu-format-parser');
 // var ASTObject = require('./icu-ast');
 
-function ICUConverter(opts) {
+var ICUConverter = function(opts) {
 
     var defaultOptions = {
         format: 'json',
