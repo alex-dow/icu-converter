@@ -82,7 +82,7 @@ var Writer = function(obj, inputFile, outputDir, argOptions) {
 
   var defaultOptions = {};
 
-  var options = _.defaults({}, argOptions, defaultOptions);
+  this.options = _.defaults({}, argOptions, defaultOptions);
 
   var inputFileName = path.basename(inputFile);
   var fileExtension = path.extname(inputFileName);
