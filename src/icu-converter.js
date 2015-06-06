@@ -70,15 +70,12 @@ ICUConverter.prototype.convert = function(grammar) {
 
   if (_.isArray(ast.elements)) {
     processedObject = [];
-    var objects = {};
     processedObject[this.parseKeyname(ast.keyName)] = {};
     ast.elements.forEach(function(el) {
-      var obj = this.deferProcessing(el);
-      processedObject.push(obj);
+      processedObject.push(this.deferProcessing(el));
     }.bind(this));
   } else {
-    var obj = this.deferProcessing(ast.elements);
-    processedObject = obj;
+    processedObject = this.deferProcessing(ast.elements);
   }
 
   var res = {};
