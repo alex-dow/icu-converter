@@ -131,13 +131,13 @@ ICUConverter.prototype.processString = function(obj) {
 ICUConverter.prototype.deferProcessing = function(obj) {
   var returnValue;
   switch (obj.type) {
-    case "table":
+    case 'table':
       returnValue = this.processTable(obj);
       break;
-    case "string":
+    case 'string':
       returnValue = this.processString(obj);
       break;
-    case "array":
+    case 'array':
       returnValue = this.processArray(obj);
       break;
     default:
