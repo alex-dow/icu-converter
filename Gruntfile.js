@@ -99,9 +99,12 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('test', [
-    'jshint:all',
-    'jscs',
     'mochaTest:test'
+  ]);
+
+  grunt.registerTask('analyze', [
+    'jshint:all',
+    'jscs'
   ]);
 
   grunt.registerTask('prepare', [
@@ -109,5 +112,5 @@ module.exports = function(grunt) {
     'clean:peg'
   ]);
 
-  grunt.registerTask('default', ['prepare', 'peg', 'test', 'reports']);
+  grunt.registerTask('default', ['prepare', 'peg', 'analyze', 'test', 'reports']);
 };
