@@ -5,9 +5,10 @@ var writer = require('../src/icu-converter').getWriter;
 
 var program = require('commander');
 var fs = require('fs');
+var path = require('path');
 
 program
-  .version('0.0.1')
+  .version('0.1.0-dev')
   .usage('[options] <file...>')
   .option('-f --format <format>', 'Select which format to use')
   .option('-e --encoding <encoding>', 'Specify the encoding of the resource bundle (defaults to utf-8)')
@@ -20,6 +21,12 @@ program.args.forEach(function(fn) {
   var jsObj = convertFile(fn, {encoding: program.encoding});
   var formatWriter = writer(program.format);
 
-  formatWriter(jsObj, fn, program.outputDir);
+  var outputDir = program.outputDir;
+  var fileExt = path.extname(fn);
+
+  var outputFn = path.basename(fn).replace('.' + fileExt) + '.' + program.format
+  var outputFile = outputDir + '/' + outputFn;
+  console.log("Writing: " + outputFile);
+  formatWriter(jsObj, outputFile);
 });
 
