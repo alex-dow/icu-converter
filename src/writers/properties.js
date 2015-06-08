@@ -20,27 +20,6 @@ function processString(str) {
   return str;
 }
 
-function processArray(arr, key) {
-
-  var newArr = [];
-
-  arr.forEach(function(obj, idx) {
-    var propObj = {};
-    var propKey = key + '.' + idx;
-    if (_.isString(obj)) {
-      propObj[propKey] = processString(obj);
-    } else {
-      // FIXME Better solutiosn to handling complex types in arrays?
-      propObj[propKey] = JSON.stringify(obj);
-    }
-
-    newArr.push(propObj);
-  });
-
-  return newArr;
-
-} 
-
 function flatten(obj, parentKey, processedObject) {
 
   for (var property in obj) {
@@ -65,6 +44,33 @@ function flatten(obj, parentKey, processedObject) {
   }
 }
 
+
+function processArray(arr, key) {
+
+  var newArr = [];
+
+  arr.forEach(function(obj, idx) {
+    var propObj;
+    var propKey = key + '.' + idx;
+    if (_.isString(obj)) {
+      propObj = {};
+      propObj[propKey] = processString(obj);
+      newArr.push(propObj);
+    } else if (_.isArray(obj)) {
+      propObj = processArray(obj, propKey);
+      newArr = newArr.concat(propObj);
+    } else {
+      propObj = [];
+      flatten(obj, propKey, propObj);
+      newArr = newArr.concat(propObj);
+    }
+
+  });
+
+  return newArr;
+
+} 
+
 function processObject(obj) {
 
   var processedObject = [];
@@ -78,19 +84,19 @@ function processObject(obj) {
   return processedObject;
 }
 
-var Writer = function(obj, inputFile, outputDir, argOptions) {
+var Writer = function(obj, fileName, argOptions) {
 
-  var defaultOptions = {};
+  var defaultOptions = {
+    mkdir: true
+  };
 
   var options = _.defaults({}, argOptions, defaultOptions);
 
-  var inputFileName = path.basename(inputFile);
-  var fileExtension = path.extname(inputFileName);
+  var outputDir = path.dirname(fileName);
 
-  var outputFileName = inputFileName.replace(fileExtension, '.properties');
-  var outputFile = outputDir + '/' + outputFileName;
-
-  mkdirp(outputDir);
+  if (options.mkdir) {
+    mkdirp(outputDir);
+  }
 
   var properties = processObject(obj);
 
@@ -102,10 +108,9 @@ var Writer = function(obj, inputFile, outputDir, argOptions) {
     propertiesFile += key + "=" + value + "\n";
   });
 
-  console.log("Writing to " + outputFile);
-  fs.writeFileSync(outputFile, propertiesFile);
+  console.log("Writing to " + fileName);
+  fs.writeFileSync(fileName, propertiesFile);
 
 };
-
 
 module.exports = Writer;
