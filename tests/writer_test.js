@@ -1,17 +1,18 @@
 describe("The writer", function() {
-  var testDir = './tests/tmp';
+  var testDir = __dirname + '/tmp';
   var mkdirp = require('mkdirp');
   var rimraf = require('rimraf');
   var writer = require('../src/writer');
   var fs = require('fs');
   var expect = require('chai').expect;
 
-  before(function() {
-    mkdirp('./tests/tmp');
+  beforeEach(function() {
+    console.log('mkdir!');
+    mkdirp(testDir);
   });
   
-  after(function() {
-    rimraf.sync('./tests/tmp');
+  afterEach(function() {
+    rimraf.sync(testDir);
   });
     
 
@@ -19,7 +20,9 @@ describe("The writer", function() {
 
     var outputDir = testDir + "/anotherLevel/output.txt";
 
-    writer(outputDir, 'foo');
+    writer(outputDir, 'foo', {
+      mkdir: true
+    });
 
     expect(fs.existsSync(testDir + '/anotherLevel/output.txt')).to.equal(true);
   });

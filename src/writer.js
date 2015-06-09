@@ -32,7 +32,7 @@ var writer = function(fileName, content, argOptions) {
 
   if (options.mkdir) {
     if (!fs.existsSync(options.mkdir)) {
-      mkdirp(outputDir);
+      mkdirp.sync(outputDir);
     }
   }
 
