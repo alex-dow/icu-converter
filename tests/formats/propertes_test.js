@@ -129,12 +129,13 @@ describe("The Properties Parser", function() {
   it("escapes unicode characters by default", function() {
 
     var jsObj = { root: {
-      key1: '\u2600'
+      key1: '\u2600',
+      key2: '\u0301'
     }};
 
     var content = parser.stringify(jsObj);
 
-    expect(content).to.equal('root.key1=\\u2600\n');
+    expect(content).to.equal('root.key1=\\u2600\nroot.key2=\\u0301\n');
 
   });
 
@@ -174,8 +175,34 @@ describe("The Properties Parser", function() {
     jsObj = { root: { key1: 'this has a \t tab'} };
     content = parser.stringify(jsObj);
     expect(content).to.equal('root.key1=this has a \\t tab\n');
+
+    jsObj = { root: { key1: 'this has a \f form feed'} };
+    content = parser.stringify(jsObj);
+    expect(content).to.equal('root.key1=this has a \\f form feed\n');
   });
 
-  
-    
+  it("escapes newlines by default", function() {
+    var jsObj = { root: { key: 'on\nmany\nlines'}};
+    var content = parser.stringify(jsObj);
+
+    expect(content).to.equal('root.key=on\\nmany\\nlines\n');
+
+    jsObj = { root: { key: 'on\rmany\rlines'}};
+    var content = parser.stringify(jsObj);
+    expect(content).to.equal('root.key=on\\rmany\\rlines\n');
+  });
+
+  it("can render multiline values if enabled", function() {
+    var jsObj = { root: { key: 'on\nmany\nlines'}};
+    var content = parser.stringify(jsObj, {
+      newline: true
+    });
+    expect(content).to.equal('root.key=on\\\nmany\\\nlines\n');
+
+    jsObj = { root: { key: 'on\rmany\rlines'}};
+    content = parser.stringify(jsObj, {
+      newline: true
+    });
+    expect(content).to.equal('root.key=on\\\rmany\\\rlines\n');
+  });
 });
