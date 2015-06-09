@@ -74,11 +74,11 @@ module.exports = function (c, code, meta, options){
   }
 
   if (code === 10) {
-   return (options.newline) ? "\s\\\n" : "\\n";
+   return (options.newline) ? " \\\n" : "\\n";
   }
 
   if (code === 13) {
-    return (options.newline) ? "\s\\\r" : "\\r";
+    return (options.newline) ? " \\\r" : "\\r";
   }
   
   //Control sets 0 and 1
