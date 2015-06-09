@@ -13,11 +13,31 @@ var _ = require('lodash');
 var path = require('path');
 var mkdirp = require('mkdirp');
 var fs = require('fs');
+var charEscape = require('./escape');
 
-function processString(str) {
-  str = str.replace(/\n/g, ' \\\n');
-  str = str.replace(/\r/g, ' \\\r');
-  return str;
+function processString(str, options) {
+
+  var processedStr = "";
+
+  var meta = {
+    whitespace: true,
+    key: false
+  };
+
+
+  for (var i = 0; i < str.length; i++) {
+    meta.whitespace = true;
+    var c = str[i];
+    var code = str.charCodeAt(i);
+
+    if (code !== 32 && code !== 9 && code !== 12) {
+      meta['whitespace'] = false;
+    }
+
+    processedStr += charEscape(c, code, meta, options);
+  }
+
+  return processedStr;
 }
 
 function flatten(obj, parentKey, processedObject) {
@@ -30,7 +50,7 @@ function flatten(obj, parentKey, processedObject) {
       } else if (_.isString(obj[property])) {
 
         var propObj = {};
-        propObj[parentKey + '.' + property] = processString(obj[property]);
+        propObj[parentKey + '.' + property] = obj[property];
         processedObject.push(propObj);
 
       } else if (_.isArray(obj[property])) {
@@ -84,33 +104,34 @@ function processObject(obj) {
   return processedObject;
 }
 
-var Writer = function(obj, fileName, argOptions) {
+function stringify(obj, argOptions) {
 
   var defaultOptions = {
-    mkdir: true
+    'separator': '=',
+    'replacer': null,
+    'unicode': false,
+    'newline': false,
+    'newlineChar': '\n'
   };
 
   var options = _.defaults({}, argOptions, defaultOptions);
 
-  var outputDir = path.dirname(fileName);
-
-  if (options.mkdir) {
-    mkdirp(outputDir);
-  }
-
   var properties = processObject(obj);
 
-  var propertiesFile = "";
+  var propertiesFile = '';
   properties.forEach(function(prop) {
     var key = _.keys(prop).pop();
-    var value = prop[key];
+    var value = processString(prop[key], {
+      newline: options.newline,
+      unicode: options.unicode
+    });
 
-    propertiesFile += key + "=" + value + "\n";
+    propertiesFile += key + options.separator + value + options.newlineChar;
   });
 
-  console.log("Writing to " + fileName);
-  fs.writeFileSync(fileName, propertiesFile);
+  return propertiesFile;
+}
 
+module.exports = {
+  stringify: stringify
 };
-
-module.exports = Writer;

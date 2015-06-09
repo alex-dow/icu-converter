@@ -24,7 +24,7 @@ var ICUConverter = function(opts) {
     };
 
     this.options = _.defaults({}, opts, defaultOptions);
-  
+
     this.validTypes = [
       'array',
       'string',
