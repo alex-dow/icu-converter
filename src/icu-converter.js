@@ -22,8 +22,8 @@ module.exports = {
     var c = new ICUConverter(opts);
     return c.convertFile(fn);
   },
-  getWriter: function(format) {
-    return require('./writers/' + format);
+  getParser: function(format) {
+    return require('./formats/' + format);
   }
 };
 

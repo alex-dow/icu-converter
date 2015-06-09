@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var convertFile = require('../src/icu-converter').convertFile;
+var getParser = require('../src/icu-converter').getParser;
 var writer = require('../src/writer');
 
 var program = require('commander');
@@ -66,10 +67,9 @@ program.args.forEach(function(fn) {
 
   var format = program.format;
 
-  var parser = require('../src/formats/' + format);
-
+  var parser = getParser(format);
   var formatOptions = getFormatOptions(program, format);
-  console.log(parser);
+  
   var content = parser.stringify(jsObj, formatOptions);
 
   var outputFile = getOutputFilename(fn, format, program.outputDir);
