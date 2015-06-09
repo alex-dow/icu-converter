@@ -16,8 +16,10 @@ function stringify(obj, argOptions) {
     replacer: null
   };
 
-  var options = _.defaults({}, defaultOptions, argOptions);
+  var options = _.defaults({}, argOptions, defaultOptions);
 
   return JSON.stringify(obj, options.replacer, options.spaces);
 
 }
+
+module.exports = stringify;
