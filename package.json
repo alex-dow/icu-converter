@@ -45,6 +45,7 @@
     "grunt-sloccount": "*",
     "jshint-jenkins-checkstyle-reporter": "0.1.2",
     "sinon": "1.14.1",
-    "mockery": "1.4.0"
+    "mockery": "1.4.0",
+    "rimraf": "2.4.0"
   }
 }
