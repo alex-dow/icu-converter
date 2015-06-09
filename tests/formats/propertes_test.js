@@ -112,4 +112,68 @@ describe("The Properties Writer", function() {
     expect(content).to.equal(expected);  
   });
 
+  it("can be configured to use a custom newline character", function() {
+
+    var jsObj = { root: {
+      key1: 'val1',
+      key2: 'val2'
+    }};
+
+    var content = parser.stringify(jsObj, {
+      newlineChar: '\r'
+    });
+
+    expect(content).to.equal('root.key1=val1\rroot.key2=val2\r');
+  });
+
+  it("escapes unicode characters by default", function() {
+
+    var jsObj = { root: {
+      key1: '\u2600'
+    }};
+
+    var content = parser.stringify(jsObj);
+
+    expect(content).to.equal('root.key1=\\u2600\n');
+
+  });
+
+  it("does not escape unicode characters when configured to do so", function() {
+    var jsObj = { root: {
+      key1: '\u2600'
+    }};
+  
+    var content = parser.stringify(jsObj, {
+      unicode: true
+    });
+    expect(content).to.equal('root.key1=\u2600\n');
+  });
+
+  it("uses the configured separator", function() {
+    var jsObj = { root: { key1: 'val1' } };
+    
+    var content = parser.stringify(jsObj, {
+      separator: ':'
+    });
+
+    expect(content).to.equal('root.key1:val1\n');
+
+    content = parser.stringify(jsObj, {
+      separator: ' : '
+    });
+  
+    expect(content).to.equal('root.key1 : val1\n');
+  });
+
+  it("escapes other whitespace properly", function() {
+    var jsObj = { root: { key1: 'this has spaces' } };
+
+    var content = parser.stringify(jsObj);
+    expect(content).to.equal('root.key1=this has spaces\n');
+
+    jsObj = { root: { key1: 'this has a \t tab'} };
+    content = parser.stringify(jsObj);
+    expect(content).to.equal('root.key1=this has a \\t tab\n');
+  });
+    
 });
