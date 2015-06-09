@@ -26,7 +26,7 @@ function processString(str, options) {
 
 
   for (var i = 0; i < str.length; i++) {
-    meta.whitespace = true;
+    meta.whitespace = false;
     var c = str[i];
     var code = str.charCodeAt(i);
 
