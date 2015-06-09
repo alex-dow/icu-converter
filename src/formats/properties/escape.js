@@ -39,8 +39,6 @@ module.exports = function (c, code, meta, options){
   //Encode characters to their unicode representation to be compatible with
   //ISO 8859-1 (latin1)
 
-  var retChar = "";
-  
   //code 61: =
   //code 58: :
   if (meta.key && (code === 61 || code === 58 || code === meta.separator)){
@@ -66,19 +64,19 @@ module.exports = function (c, code, meta, options){
   //ASCII non-printable characters
   //Escaped
   if (code === 9) {
-    return meta.comment ? c : "\\t";
+    return "\\t";
   }
 
   if (code === 12) {
-    return meta.comment ? c : "\\f";
+    return "\\f";
   }
 
   if (code === 10) {
-   return (options.newline) ? " \\\n" : "\\n";
+   return (options.newline) ? "\\\n" : "\\n";
   }
 
   if (code === 13) {
-    return (options.newline) ? " \\\r" : "\\r";
+    return (options.newline) ? "\\\r" : "\\r";
   }
   
   //Control sets 0 and 1
