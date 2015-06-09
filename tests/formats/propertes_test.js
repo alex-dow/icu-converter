@@ -7,7 +7,7 @@
  * https://github.com/alex-dow/icu-converter/blob/master/LICENSE
  */
 
-describe("The Properties Writer", function() {
+describe("The Properties Parser", function() {
 
   var expect = require('chai').expect;
   var fs = require('fs');
@@ -175,5 +175,7 @@ describe("The Properties Writer", function() {
     content = parser.stringify(jsObj);
     expect(content).to.equal('root.key1=this has a \\t tab\n');
   });
+
+  
     
 });
