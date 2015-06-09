@@ -92,5 +92,5 @@ module.exports = function (c, code, meta, options){
   }
   
   //Latin1 multibyte character
-  return options.unicode ? unicode (code) : c;
+  return options.unicode === false ? unicode (code) : c;
 };
