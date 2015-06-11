@@ -97,7 +97,26 @@ resourceBundle
       obj[keyName] = o;
       return obj;
     }
-
+  / keyName:bundleName (":integer" / ":int") ws "{" ws o:(integerFormat) ws "}" ws {
+      var obj = {};
+      obj[keyName] = parseInt(o);
+      return obj;
+    }
+  / keyName:bundleName (":integer" / ":int") ws "{" ws o:(stringFormat) "}" ws {
+      var obj = {};
+      var val = parseInt(o);
+      if (isNaN(val)) {
+        val = null;
+      }
+      obj[keyName] = val;
+      return obj;
+    }
+  / keyName:bundleName (":intvector") ws "{" ws o:(integerFormat) ws "}" ws {
+      return processArrayWithKeyOneItem(keyName, o);
+   }
+  / keyName:bundleName (":intvector") ws "{" ws o:(intvectorFormat) "}" ws {
+    return processArrayWithKey(keyName, o);
+   }
   / ":table" "{" ws o:(resourceBundle)+ ws "}" {
       return processTableWithoutKey(o);
     }
@@ -111,13 +130,26 @@ resourceBundle
   / ":array" ws "{" ws o:(resourceBundle) ws "}" {
       return [o];
     }
-  / ":string" "{" ws o:(stringFormat) ws "}" {
+  / ":string" ws "{" ws o:(stringFormat) ws "}" {
       return o;
+    }
+  / ":string" ws "{" ws o:(integerFormat) ws "}" {
+      return o.toString();
+    }
+  / (":integer" / ":int") ws "{" ws o:(integerFormat) ws "}" {
+      return parseInt(o);
+    }
+  / (":integer" / ":int") ws "{" ws o:(stringFormat) ws "}" {
+      return parseInt(o);
+    }
+
+
+  / "{" ws o:(integerFormat) ws "}" {
+       return o;
     }
   / "{" ws o:(stringFormat) ws "}" {
        return o;
     }
-
   / "{" ws o:(arrayFormat) ws "}" {
       return o;
     }
@@ -125,10 +157,13 @@ resourceBundle
       return o;
     }
 
+
   / ws o:(integerFormat) ws {
       return o;
     }
-
+  / o:(integerFormat) {
+      return o;
+    }
   / o:(stringFormat) {
       return o;
     }
@@ -147,12 +182,19 @@ resourceBundle
     }
 
 
-  
-
+intvectorFormat
+  = o:integerFormat ws remaining:("," ws integerFormat)+ ws {
+      var oa = [o];
+      for (var i = 0; i < remaining.length; i++) {
+        oa.push(remaining[i][2]);
+      }
+      return oa;
+    }
 
 
 arrayFormat
   = o:resourceBundle ws remaining:("," ws resourceBundle)+ ws {
+     console.log(o);
      var oa = [o];
      for (var i = 0; i < remaining.length; i++) {
        oa.push(remaining[i][2]);
@@ -190,7 +232,16 @@ bundleName
     return o.trim();
   }
 
-dataType = ":table" / ":array" / ":string" / ":integer" / ":int" / ":intvector"
+intType 
+  = ":int" 
+  / ":integer"
+
+dataType 
+  = ":table" 
+  / ":array" 
+  / ":string" 
+  / intType
+  / ":intvector"
 
 invariantChar 
   = [A-Z] 
