@@ -36,12 +36,12 @@ describe("Converter", function() {
 
   it("can process a MessageFormat string on multiple lines", function() {
     var jsObj = getJsObj("tests/fixtures/strings/string4.txt");
-    expect(jsObj.root.msgid).to.equal('MessageFormat {0, plural,\n{ one\n{ stuff }\n}\n}');
+    expect(jsObj.root.msgid).to.equal('MessageFormat {0, plural, \n    { one\n      { stuff }\n    }\n  }');
   }); 
 
-  it("treats a list of strings without a comma as an array", function() {
+  it("treats a list of strings without a comma as a single string", function() {
     var jsObj = getJsObj("tests/fixtures/strings/string5.txt");
-    expect(jsObj.root.msgid).to.eql(['string1','string2','string3']);
+    expect(jsObj.root.msgid).to.eql('string1string2string3');
   });
 
   it("treats a list of strings with a comma as an array", function() {
