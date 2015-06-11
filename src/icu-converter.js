@@ -11,7 +11,6 @@
 var _ = require('lodash');
 var fs = require('fs');
 var parser = require('./icu-format-parser');
-var ICU = require('./converter');
 
 module.exports = {
 

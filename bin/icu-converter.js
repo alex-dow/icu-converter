@@ -61,7 +61,7 @@ program
 program.args.forEach(function(fn) {
 
   console.log("Convert contents of " + fn + " to a javascript object");
-  var jsObj = convertFile(fn, program.inputEncoding);
+  var jsObj = parseFile(fn, program.inputEncoding);
 
   console.log("Convert javascript object to selected format (" + program.format + ")");
 
