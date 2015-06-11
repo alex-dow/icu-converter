@@ -72,12 +72,17 @@ program.args.forEach(function(fn) {
   
   var content = parser.stringify(jsObj, formatOptions);
 
-  var outputFile = getOutputFilename(fn, format, program.outputDir);
-  console.log("Writing content to " + outputFile);
-  writer(outputFile, content, {
-    encoding: program.outputEncoding,
-    mkdir: true
-  });
+  if (content) {
+
+    var outputFile = getOutputFilename(fn, format, program.outputDir);
+    console.log("Writing content to " + outputFile);
+    writer(outputFile, content, {
+      encoding: program.outputEncoding,
+      mkdir: true
+    });
+  } else {
+    console.log("No content to write");
+  }
   
 });
 
