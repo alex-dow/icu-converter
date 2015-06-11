@@ -7,7 +7,6 @@ describe("The writer", function() {
   var expect = require('chai').expect;
 
   beforeEach(function() {
-    console.log('mkdir!');
     mkdirp(testDir);
   });
   

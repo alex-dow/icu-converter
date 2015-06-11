@@ -29,21 +29,20 @@ resourceBundleStart
     }
 
 resourceBundle
-  = ":table"* ws "{" ws o:(tableFormat)+ ws "}" ws {
+  = ":array"* ws "{" ws o:(arrayFormat)+ ws "}" ws {
       if (o.length === 1) {
         return o[0];
       } else {
         return o;
       }
     }
-  / ":array"* ws "{" ws o:(arrayFormat)+ ws "}" ws {
+  / ":table"* ws "{" ws o:(tableFormat)+ ws "}" ws {
       if (o.length === 1) {
         return o[0];
       } else {
         return o;
       }
     }
-    
   / ":string"* ws "{" ws o:(stringFormat)+ ws "}" ws {
       if (o.length === 1) {
         return o[0];
@@ -67,26 +66,37 @@ tableFormat
     }
 
 arrayFormat
-  = ws o:resourceBundle ws remaining:(ws "," ws resourceBundle)+ ws {
-    var oa = [o];
-    remaining.forEach(function(item) {
-      oa.push(item[3]);
-    });
-    var res = {
-      type: "array",
-      value: oa
-    };
-    return res;
+  = ws o:stringFormat ws remaining:(ws ","* ws stringFormat)+ ws {
+      var oa = [o];
+      remaining.forEach(function(item) {
+        oa.push(item[3]);
+      });
+      var res = {
+        type: "array",
+        value: oa
+      };
+      return res;
+    }
+  / ws o:resourceBundle ws remaining:(ws "," ws resourceBundle)+ ws {
+      var oa = [o];
+      remaining.forEach(function(item) {
+        oa.push(item[3]);
+      });
+      var res = {
+        type: "array",
+        value: oa
+      };
+      return res;
     }
   / ws o:resourceBundle {
-    var res = {
-      type: "array",
-      value: [o]
-    };
-    return res;
+      var res = {
+        type: "array",
+        value: [o]
+      };
+      return res;
     }
 
-
+     
 stringFormat
   = ws '"' ws o:chars ws '"' ws {
       var res = {
