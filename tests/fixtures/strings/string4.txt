@@ -1,0 +1,7 @@
+root {
+  msgid { "MessageFormat {0, plural, 
+    { one
+      { stuff }
+    }
+  }"
+}}

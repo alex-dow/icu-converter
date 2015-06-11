@@ -1,0 +1,4 @@
+root {
+  msgid:integer { "10" }
+  msgid2:int { "10" }
+}

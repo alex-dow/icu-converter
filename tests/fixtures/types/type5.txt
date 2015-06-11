@@ -1,0 +1,3 @@
+root {
+  msgid { arr:array { "string1" } }
+}
