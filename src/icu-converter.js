@@ -11,18 +11,40 @@
 var _ = require('lodash');
 var fs = require('fs');
 var parser = require('./icu-format-parser');
-var ICUConverter = require('./converter');
+var ICU = require('./converter');
 
 module.exports = {
-  convert: function(opts) {
-    var c = new ICUConverter(opts);
-    return c.convert();
+
+  /**
+   * Parse a resource bundle
+   *
+   * @param string
+   */
+  parse: function(bundle) {
+    return parser.parse(bundle);
   },
-  convertFile: function(fn, opts) {
-    var c = new ICUConverter(opts);
-    return c.convertFile(fn);
+
+  /**
+   * Parse a resource bundle file
+   *
+   * @param encoding Defaults to utf-8
+   */
+  parseFile: function(fn, encoding) {
+    if (!encoding) {
+      encoding = "utf-8";
+    }
+    
+    var bundle = fs.readFileSync(fn, encoding);
+    return parser.parse(bundle);
   },
-  getParser: function(format) {
+
+  /**
+   * Get a formatter
+   *
+   * Get a formatter that will convert a JS object to a specific format
+   * @param format Name of the format, supported values are 'json', 'debug', and 'properties'
+   */
+  getFormatter: function(format) {
     return require('./formats/' + format);
   }
 };

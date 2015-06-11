@@ -67,10 +67,11 @@ Valid values for format are:
 * `json`
 * `properties`
 
-## Missing Features
+## Unspported Features
 
-1. Only `table`, `array`, and `string` types are handled. This means that `integer`, `intvector`, and `binary` are not supported.
-2. Aliasing and imports are not supported.
+1. Binary Data Type
+2. Imports
+3. Aliasing
 
 
 ## API
@@ -80,8 +81,8 @@ Valid values for format are:
 From a file:
 
 ```javascript
-var converter = require('icu-converter').convertFile;
-var jsObj = converter('/path/to/resourceBundle.txt', {
+var parseFile = require('icu-converter').parseFile;
+var jsObj = parseFile('/path/to/resourceBundle.txt', {
   encoding: 'utf-8'
 });
 
@@ -91,9 +92,9 @@ console.log(jsObj);
 From a string:
 
 ```javascript
-var converter = require('icu-converter').convert;
+var parse = require('icu-converter').parse;
 var resource = "root { msgid { "string" } }";
-var jsObj = converter(resource);
+var jsObj = parse(resource);
 
 console.log(jsObj);
 ```
@@ -103,15 +104,15 @@ console.log(jsObj);
 To convert a resource bundle to a different format, you must fetch a parser of the format you'd like to use:
 
 ```javascript
-var convertFile = require('icu-converter').convertFile;
-var parser = require('icu-converter').getParser('json');
+var parseFile = require('icu-converter').parseFile;
+var formatter = require('icu-converter').getFormatter('json');
 
 var resourceFile = 'tests/fixtures/tables/table1.txt';
 
-var jsObj = convertFile(resourceFile, {
+var jsObj = parseFile(resourceFile, {
   encoding: 'utf-8'
 });
-var content = parser.stringify(jsObj);
+var content = formatter.stringify(jsObj);
 ```
 
 Each parser has a method called `stringify` that takes a javascript object and converts it to a string.

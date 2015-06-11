@@ -14,12 +14,11 @@ describe("The Properties Parser", function() {
   var writer, spy;
   var sinon = require('sinon');
   var mockery = require('mockery');
-  var ICUConverter = require('../../src/converter');
+  var ICUConverter = require('../../src/icu-converter');
   var parser = require('../../src/formats/properties');
 
   function getJsObj(fileName) {
-    var converter = new ICUConverter();
-    var jsObj = converter.convert(fs.readFileSync(fileName, 'utf-8'));
+    var jsObj = ICUConverter.parse(fs.readFileSync(fileName, 'utf-8'));
     return jsObj;
   }
 

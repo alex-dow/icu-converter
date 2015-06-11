@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-var convertFile = require('../src/icu-converter').convertFile;
-var getParser = require('../src/icu-converter').getParser;
+var parseFile = require('../src/icu-converter').parseFile;
+var getFormatter = require('../src/icu-converter').getFormatter;
 var writer = require('../src/writer');
 
 var program = require('commander');
@@ -61,16 +61,16 @@ program
 program.args.forEach(function(fn) {
 
   console.log("Convert contents of " + fn + " to a javascript object");
-  var jsObj = convertFile(fn, {encoding: program.inputEncoding});
+  var jsObj = convertFile(fn, program.inputEncoding);
 
   console.log("Convert javascript object to selected format (" + program.format + ")");
 
   var format = program.format;
 
-  var parser = getParser(format);
+  var formatter = getFormatter(format);
   var formatOptions = getFormatOptions(program, format);
   
-  var content = parser.stringify(jsObj, formatOptions);
+  var content = formatter.stringify(jsObj, formatOptions);
 
   if (content) {
 

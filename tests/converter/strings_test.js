@@ -9,13 +9,12 @@
 
 describe("Converter", function() {
 
-  var ICUConverter = require('../../src/converter');
+  var ICUConverter = require('../../src/icu-converter');
   var fs = require('fs');
   var expect = require('chai').expect;
 
   function getJsObj(fileName) {
-    var converter = new ICUConverter();
-    var jsObj = converter.convert(fs.readFileSync(fileName, 'utf-8'));
+    var jsObj = ICUConverter.parse(fs.readFileSync(fileName, 'utf-8'));
     return jsObj;
   } 
 

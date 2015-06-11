@@ -9,15 +9,14 @@
 
 describe("Converter", function() {
 
+  var expect = require('chai').expect;
+  var ICUConverter = require('../../src/icu-converter');
+  var fs = require('fs');
+
   function getJsObj(fileName) {
-    var converter = new ICUConverter();
-    var jsObj = converter.convert(fs.readFileSync(fileName, 'utf-8'));
+    var jsObj = ICUConverter.parse(fs.readFileSync(fileName, 'utf-8'));
     return jsObj;
   }
-
-  var expect = require('chai').expect;
-  var ICUConverter = require('../../src/converter');
-  var fs = require('fs');
 
   it("can process a deeply nested structure", function() {
     var jsObj = getJsObj('tests/fixtures/tables/table1.txt');

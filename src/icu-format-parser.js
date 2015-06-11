@@ -136,7 +136,6 @@ module.exports = (function() {
               return oa;
             },
         peg$c39 = function(o, remaining) {
-             console.log(o);
              var oa = [o];
              for (var i = 0; i < remaining.length; i++) {
                oa.push(remaining[i][2]);
