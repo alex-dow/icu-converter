@@ -2,7 +2,7 @@
 [![npm version](https://badge.fury.io/js/icu-converter.svg)](http://badge.fury.io/js/icu-converter)
 
 # icu-converter
-version 0.1.0-dev
+version 0.1.0
 
 icu-converter is a nodejs-based tool to convert [ICU Resource Bundles](http://userguide.icu-project.org/locale/resources) into other formats.
 
