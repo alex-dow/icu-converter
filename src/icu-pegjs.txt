@@ -14,12 +14,16 @@
   }
 
   function processTableWithKey(keyName, o) {
+      
       var obj = {};
       obj[keyName] = {};
 
       for (var i = 0; i < o.length; i++) {
 
         if (typeof o[i] === "string") {
+          obj[keyName] = o[i];
+        
+        } else if (typeof o[i] === "number") {
           obj[keyName] = o[i];
         } else {
           for (var k in o[i]) {
@@ -121,6 +125,10 @@ resourceBundle
       return o;
     }
 
+  / ws o:(integerFormat) ws {
+      return o;
+    }
+
   / o:(stringFormat) {
       return o;
     }
@@ -140,9 +148,7 @@ resourceBundle
 
 
   
-  / ws o:(integerFormat) ws {
-      return o;
-    }
+
 
 
 arrayFormat
