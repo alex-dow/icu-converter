@@ -1,0 +1,3 @@
+root {
+  arr:array { "string1" }
+}

@@ -1,0 +1,16 @@
+root:table {
+  msgid:string { "string1" }
+  msgid2:array {
+    "string1",
+    "string2",
+    "string3"
+  }
+  msgid3:array {
+    :string { "string1" },
+    :string { "string2" },
+    :string { "string3" }
+  }
+  msgid4:int { 10 }
+  msgid5:integer { 5 }
+  msgid6:intvector { 1, 2, 3 }
+}

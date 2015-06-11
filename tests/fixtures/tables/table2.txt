@@ -1,0 +1,8 @@
+root {
+  table1 {
+    fldname { "string" }
+  }
+  table2 {
+    fldname { "string" }
+  }
+}

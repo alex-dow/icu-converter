@@ -3,108 +3,272 @@
 *
 * [1] http://source.icu-project.org/repos/icu/icuhtml/trunk/design/bnf_rb.txt
 * 
-* 
+* Copyright (c) 2015 Alex Dowgailenko
+* Licensed under the MIT License
+* https://github.com/alex-dow/icu-converter/blog/master/LICENSE
+*
 */
-start
-  = keyName:bundleName ws "{" ws out:(resourceBundleStart)+ ws "}" ws {
-    var res = {
-      keyName: keyName,
-      type: "table",
-      elements: out
-    }
-    return res;
+{
+  function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+  }
+
+  function processTableWithKey(keyName, o) {
+      
+      var obj = {};
+      obj[keyName] = {};
+
+      for (var i = 0; i < o.length; i++) {
+
+        if (typeof o[i] === "string") {
+          obj[keyName] = o[i];
+        
+        } else if (typeof o[i] === "number") {
+          obj[keyName] = o[i];
+        } else {
+          for (var k in o[i]) {
+            if (o[i].hasOwnProperty(k)) {
+              obj[keyName][k] = o[i][k];
+            }
+          }
+        }
+      }
+      
+      return obj;
+  }
+
+  function processTableWithoutKey(o) {
+    var obj = {};
+    for (var i = 0; i < o.length; i++) {
+      obj[o[i][1]] = o[i][2];
     }
 
-resourceBundleStart
-  = keyName:bundleName st:resourceBundle {
-      var res = {};
-      res = {
-        keyName: keyName,
-        type: "table",
-        elements: st
-      };
+    return obj;
+  }
+
+  function processArrayWithKey(keyName, o) {
+      var obj = {};
+      if (o.length === 1) {
+        o = o[0];
+      }
+      obj[keyName] = o;
+      return obj;
+  }
+
+  function processArrayWithKeyOneItem(keyName, o) {
+      var obj = {};
+      obj[keyName] = [o];
+      return obj;
+  }
+
+  function processArrayWithoutKey(o) {
+
+    var obj = [];
+    return obj;
+
+  }
+}
+
+start
+  = o:resourceBundle ws {
+      return o;
+      var res = {}
+      res[keyName] = o;
       return res;
     }
 
 resourceBundle
-  = ":table"* ws "{" ws o:(tableFormat)+ ws "}" ws {
-      if (o.length === 1) {
-        return o[0];
-      } else {
-        return o;
-      }
-    }
-  / ":array"* ws "{" ws o:(arrayFormat)+ ws "}" ws {
-      if (o.length === 1) {
-        return o[0];
-      } else {
-        return o;
-      }
-    }
-    
-  / ":string"* ws "{" ws o:(stringFormat)+ ws "}" ws {
-      if (o.length === 1) {
-        return o[0];
-      } else {
-        return o;
-      }
-    }
-  / ws "{" ws "}" {
-      return {};
+  = ws "{" ws "}" {
+      return null;
     }
 
-tableFormat
-  = ws keyName:bundleName fld:resourceBundle+ ws {
-      var res = {
-        keyName: keyName,
-        type: "table",
-        elements: fld[0]
-     }
- 
-     return res;
+
+  / keyName:bundleName ":table" ws "{" ws o:(resourceBundle)+ ws "}" ws {
+      return processTableWithKey(keyName, o);
     }
+  / keyName:bundleName ":array" ws "{" ws o:(arrayFormat) ws "}" ws {
+      return processArrayWithKey(keyName, o);     
+    }
+  / keyName:bundleName ":array" ws "{" ws o:(resourceBundle) ws "}" ws {
+      return processArrayWithKeyOneItem(keyName, o);
+    }
+  / keyName:bundleName ":string" ws "{" ws o:(stringFormat) ws "}" ws {
+      var obj = {};
+      obj[keyName] = o;
+      return obj;
+    }
+  / keyName:bundleName (":integer" / ":int") ws "{" ws o:(integerFormat) ws "}" ws {
+      var obj = {};
+      obj[keyName] = parseInt(o);
+      return obj;
+    }
+  / keyName:bundleName (":integer" / ":int") ws "{" ws o:(stringFormat) "}" ws {
+      var obj = {};
+      var val = parseInt(o);
+      if (isNaN(val)) {
+        val = null;
+      }
+      obj[keyName] = val;
+      return obj;
+    }
+  / keyName:bundleName (":intvector") ws "{" ws o:(integerFormat) ws "}" ws {
+      return processArrayWithKeyOneItem(keyName, o);
+   }
+  / keyName:bundleName (":intvector") ws "{" ws o:(intvectorFormat) "}" ws {
+    return processArrayWithKey(keyName, o);
+   }
+  / ":table" "{" ws o:(resourceBundle)+ ws "}" {
+      return processTableWithoutKey(o);
+    }
+  / ":array" ws "{" ws o:(arrayFormat) ws "}" {
+      if (!arrayType && o.length === 1) {
+        o = o[0];
+      }
+          
+      return o;
+    }
+  / ":array" ws "{" ws o:(resourceBundle) ws "}" {
+      return [o];
+    }
+  / ":string" ws "{" ws o:(stringFormat) ws "}" {
+      return o;
+    }
+  / ":string" ws "{" ws o:(integerFormat) ws "}" {
+      return o.toString();
+    }
+  / (":integer" / ":int") ws "{" ws o:(integerFormat) ws "}" {
+      return parseInt(o);
+    }
+  / (":integer" / ":int") ws "{" ws o:(stringFormat) ws "}" {
+      return parseInt(o);
+    }
+
+
+  / "{" ws o:(integerFormat) ws "}" {
+       return o;
+    }
+  / "{" ws o:(stringFormat) ws "}" {
+       return o;
+    }
+  / "{" ws o:(arrayFormat) ws "}" {
+      return o;
+    }
+  / "{" ws o:(resourceBundle) ws "}" {
+      return o;
+    }
+
+
+  / ws o:(integerFormat) ws {
+      return o;
+    }
+  / o:(integerFormat) {
+      return o;
+    }
+  / o:(stringFormat) {
+      return o;
+    }
+
+  / keyName:bundleName ws "{" ws o:(arrayFormat) ws "}" ws {
+      var obj = {};
+      if (o.length === 1) {
+        o = o[0];
+      }
+      obj[keyName] = o;
+      return obj;
+    }
+
+  / keyName:bundleName ws "{" ws o:(resourceBundle)+ ws "}" ws {
+      return processTableWithKey(keyName, o);
+    }
+
+
+intvectorFormat
+  = o:integerFormat ws remaining:("," ws integerFormat)+ ws {
+      var oa = [o];
+      for (var i = 0; i < remaining.length; i++) {
+        oa.push(remaining[i][2]);
+      }
+      return oa;
+    }
+
 
 arrayFormat
-  = ws o:resourceBundle ws remaining:(ws "," ws resourceBundle)+ ws {
-    var oa = [o];
-    remaining.forEach(function(item) {
-      oa.push(item[3]);
-    });
-    var res = {
-      type: "array",
-      value: oa
-    };
-    return res;
+  = o:resourceBundle ws remaining:("," ws resourceBundle)+ ws {
+     var oa = [o];
+     for (var i = 0; i < remaining.length; i++) {
+       oa.push(remaining[i][2]);
+     }
+     return oa;
     }
-  / ws o:resourceBundle {
-    var res = {
-      type: "array",
-      value: [o]
-    };
-    return res;
-    }
-
-
+     
 stringFormat
-  = ws '"' ws o:chars ws '"' ws {
-      var res = {
-        type: "string",
-        value: o
+  = o:('"' ws chars ws '"' ws)+ {
+
+      var str = "";
+      for (var i = 0; i < o.length; i++) {
+        str = str + o[i][2];
       }
-      return res;
+      return str;
     }
 
+integerFormat
+  = o:number {
+      var sign = o[0];
+      var number = o[1].join("");
+      var val;
+      if (sign) {
+        val = parseInt(sign + number);
+      } else {
+        val = parseInt(number);
+      }
 
-bundleName = chars:invariantChar+ {
-  if (chars && chars.length) {
-    return chars.join("");
-  } else {
-    return "";
+      return val;
+    }
+     
+
+bundleName 
+  = o:invariantChars {
+    return o.trim();
   }
-}
 
-invariantChar = [A-Za-z0-9\s\"\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\_]
-invariantChars = chars:invariantChar* { return chars.join(""); }
+intType 
+  = ":int" 
+  / ":integer"
+
+dataType 
+  = ":table" 
+  / ":array" 
+  / ":string" 
+  / intType
+  / ":intvector"
+
+invariantChar 
+  = [A-Z] 
+  / [a-z] 
+  / [0-9] 
+  / ' ' 
+  / '"' 
+  / '%' 
+  / '&' 
+  / "'" 
+  / '(' 
+  / ')' 
+  / '*'
+  / '+' 
+  / ',' 
+  / '-' 
+  / '.' 
+  / '/'
+  / ';' 
+  / '<' 
+  / '=' 
+  / '>' 
+  / '?' 
+  / '_'
+
+invariantChars = c:invariantChar+ {
+  return c.join("");
+}
 
 hexDigit = [0-9A-Fa-f]
 number = sign? digit+
