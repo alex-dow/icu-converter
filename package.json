@@ -12,6 +12,10 @@
     "type": "git",
     "url": "https://github.com/alex-dow/icu-converter"
   },
+  "files": [
+    "src",
+    "bin"
+  ],
   "main": "src/icu-converter",
   "keywords": [
     "icu",
