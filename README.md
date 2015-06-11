@@ -256,6 +256,7 @@ If you want to submit changes to the PEG file itself, then there must be extensi
 Please respect the `.editorconfig`, `.jshintrc`, and `.jscsrc` files.
 
 ## Release History
+* 2015-06-11  v0.1.0  Completely different architecture, bug fixes, support for integer data types, better support for type coersion
 * 2015-06-06  v0.0.5  Bug fixes, better array handling, and starting the unit tests
 * 2015-06-05  v0.0.4  Bug fixes and improved architecture
 * 2015-06-04  v0.0.3  Added preliminary properties file converter, and other bug fixes
