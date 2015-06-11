@@ -74,7 +74,7 @@ module.exports = function(grunt) {
       options: {
         reportPath: 'build/reports/sloc.sc'
       },
-      src: ['src/**/*.js']
+      src: ['src/**/*.js', '!src/icu-format-parser.js', '!**/*.cm']
     }
      
 
