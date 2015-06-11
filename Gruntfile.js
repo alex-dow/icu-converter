@@ -65,6 +65,7 @@ module.exports = function(grunt) {
           coverageFolder: 'build/reports/coverage',
           reportFormats: ['html', 'lcovonly', 'cobertura'],
           mask: '**/*_test.js',
+          excludes: ['icu-format-parser.js'],
           root: './src'
         }
       }
