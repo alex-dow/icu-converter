@@ -18,7 +18,7 @@ function stringify(obj, argOptions) {
 
   var options = _.defaults({}, argOptions, defaultOptions);
 
-  return JSON.stringify(obj, options.replacer, options.spaces);
+  return JSON.stringify(obj, options.replacer, parseInt(options.spaces));
 
 }
 
