@@ -73,9 +73,10 @@ module.exports = function(grunt) {
     
     sloccount: {
       options: {
-        reportPath: 'build/reports/sloc.sc'
+        reportPath: 'build/reports/sloc.sc',
+        comments: false
       },
-      src: ['src/**/*.js', '!src/icu-format-parser.js', '!**/*.cm']
+      src: ['src/**/*.js', '!src/icu-format-parser.js']
     }
      
 
