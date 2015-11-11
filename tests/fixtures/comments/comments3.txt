@@ -1,0 +1,8 @@
+root {
+  // this is a comment
+  msgid { "string" } // a tailing comment
+  nested {
+    // this is a comment in a nested key
+    somestring { "somestring" }
+  }
+}
