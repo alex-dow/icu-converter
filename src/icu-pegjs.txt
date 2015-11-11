@@ -81,7 +81,9 @@ resourceBundle
   = ws "{" ws "}" {
       return null;
     }
-
+  / ws comment {
+      return null;
+    }
 
   / keyName:bundleName ":table" ws "{" ws o:(resourceBundle)+ ws "}" ws {
       return processTableWithKey(keyName, o);
@@ -224,6 +226,12 @@ integerFormat
 
       return val;
     }
+
+comment
+ = "//" [^\n\r]* EOL
+
+EOL
+ = [\n\r]{1,2} / !.
      
 
 bundleName 

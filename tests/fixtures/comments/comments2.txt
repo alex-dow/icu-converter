@@ -1,0 +1,4 @@
+root {
+  // this is a comment
+  msgid { "string" } // a tailing comment
+}
