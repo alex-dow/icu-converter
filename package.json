@@ -1,6 +1,6 @@
 {
   "name": "icu-converter",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Convert ICU resource bundles to other formats",
   "scripts": {
     "test": "grunt test"
@@ -29,6 +29,10 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/alex-dow/icu-converter/issues"
+  },
+  "peerDependencies": {
+    "mocha": ">=1.20.0",
+    "istanbul": "0.x.x"
   },
   "dependencies": {
     "lodash": "3.9.3",

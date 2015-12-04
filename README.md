@@ -256,6 +256,7 @@ If you want to submit changes to the PEG file itself, then there must be extensi
 Please respect the `.editorconfig`, `.jshintrc`, and `.jscsrc` files.
 
 ## Release History
+* 2015-12-04  v0.1.2  Support for escape characters - issue #25
 * 2015-11-10  v0.1.1  Fix issue #22
 * 2015-06-11  v0.1.0  Completely different architecture, bug fixes, support for integer data types, better support for type coersion
 * 2015-06-06  v0.0.5  Bug fixes, better array handling, and starting the unit tests

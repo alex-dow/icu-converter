@@ -9,7 +9,7 @@ var fs = require('fs');
 var path = require('path');
 
 function getFormatOptions(program, format) {
-  
+
   var formatOptions = {};
 
   for (var prop in program) {
@@ -38,14 +38,14 @@ function getOutputFilename(fn, format, outputDir) {
 
   var outputFn = path.basename(fn).replace(fileExt, '') + '.' + format
   var outputFile = outputDir + '/' + outputFn;
- 
+
   return outputFile;
 }
 
 
 
 program
-  .version('0.1.0-dev')
+  .version('0.1.2')
   .usage('[options] <file...>')
   .option('-f, --format <format>', 'Select which format to use')
   .option('-e, --inputEncoding <inputEncoding>', 'Specify the encoding of the resource bundle (defaults to utf-8)')
@@ -69,7 +69,7 @@ program.args.forEach(function(fn) {
 
   var formatter = getFormatter(format);
   var formatOptions = getFormatOptions(program, format);
-  
+
   var content = formatter.stringify(jsObj, formatOptions);
 
   if (content) {
@@ -83,6 +83,6 @@ program.args.forEach(function(fn) {
   } else {
     console.log("No content to write");
   }
-  
+
 });
 

@@ -273,6 +273,7 @@ invariantChar
   / '>' 
   / '?' 
   / '_'
+  / '\\'
 
 invariantChars = c:invariantChar+ {
   return c.join("");
@@ -283,7 +284,30 @@ number = sign? digit+
 sign = "-"
 digit = [0-9]
 
-char = [\x20-\x21\x23-\x5B\x5D-\u10FFFF\t\r\n]
+char
+  = unescaped
+  / escape
+    sequence:(
+      '"'
+    / "\\"
+    / "/"
+    / "b" { return "\b" }
+    / "f" { return "\f" }
+    / "n" { return "\n" }
+    / "r" { return "\r" }
+    / "t" { return "\t" }
+    / "u" digits:$(HEXDIG HEXDIG HEXDIG HEXDIG) {
+          return String.fromCharCode(parseInt(digits, 16));
+        }
+    )
+    { return sequence; }
+
+escape = "\\"
+unescaped = [\n\r\t\x20-\x21\x23-\x5B\x5D-\u10FFFF]
+
+//char = [\x20-\x21\x23-\x5B\x5D-\u10FFFF\t\r\n]
 chars = chars:char* { return chars.join(""); }
 
 ws = [ \t\n\r]*
+
+HEXDIG = [0-9a-f]
