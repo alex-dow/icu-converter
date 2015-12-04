@@ -1,6 +1,6 @@
 {
   "name": "icu-converter",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Convert ICU resource bundles to other formats",
   "scripts": {
     "test": "grunt test"

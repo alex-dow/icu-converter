@@ -45,7 +45,7 @@ function getOutputFilename(fn, format, outputDir) {
 
 
 program
-  .version('0.1.2')
+  .version('0.1.3')
   .usage('[options] <file...>')
   .option('-f, --format <format>', 'Select which format to use')
   .option('-e, --inputEncoding <inputEncoding>', 'Specify the encoding of the resource bundle (defaults to utf-8)')
