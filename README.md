@@ -2,7 +2,7 @@
 [![npm version](https://badge.fury.io/js/icu-converter.svg)](http://badge.fury.io/js/icu-converter)
 
 # icu-converter
-version 0.1.3
+version 0.1.4
 
 icu-converter is a nodejs-based tool to convert [ICU Resource Bundles](http://userguide.icu-project.org/locale/resources) into other formats.
 
@@ -256,6 +256,7 @@ If you want to submit changes to the PEG file itself, then there must be extensi
 Please respect the `.editorconfig`, `.jshintrc`, and `.jscsrc` files.
 
 ## Release History
+* 2015-12-07  v0.1.4  Fix issue #27 - Using ints as key names
 * 2015-12-04  v0.1.2  Support for escape characters - issue #25
 * 2015-11-10  v0.1.1  Fix issue #22
 * 2015-06-11  v0.1.0  Completely different architecture, bug fixes, support for integer data types, better support for type coersion
