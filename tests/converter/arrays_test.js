@@ -138,4 +138,11 @@ describe("Converter", function() {
 
     expect(jsObj.root.arrayitem[0]).to.equal('string1');
   });
+
+  it("will handle an array that has a numeric key", function() {
+    var fixtureFile = "tests/fixtures/arrays/array13.txt";
+    var jsObj = getJsObj(fixtureFile);
+
+    expect(jsObj.root['1000'][0]).to.equal('string1');
+  });
 });

@@ -1,0 +1,18 @@
+root {
+  msgid { "string" }
+  1000 { "string2" }
+  nest1 {
+    1000 { "second string 1" }
+    1001 { "second string 2" }
+  }
+  nest2 {
+    nest22 {
+      id1 { "third string 1" }
+      id2 { "third string 2" }
+    }
+    1000 {
+      id1 { "fourth string 1" }
+      id2 { "fourth string 2" }
+    }
+  }
+}

@@ -29,6 +29,16 @@ describe("Converter", function() {
     expect(jsObj.root.table2.fldname).to.equal('string');
   });
 
-
+  it("can process a nested structure with a mix of numeric and string keys", function() {
+    var jsObj = getJsObj('tests/fixtures/tables/table4.txt');
+    expect(jsObj.root.msgid).to.equal('string');
+    expect(jsObj.root['1000']).to.equal('string2');
+    expect(jsObj.root.nest1['1000']).to.equal('second string 1');
+    expect(jsObj.root.nest1['1001']).to.equal('second string 2');
+    expect(jsObj.root.nest2.nest22.id1).to.equal('third string 1');
+    expect(jsObj.root.nest2.nest22.id2).to.equal('third string 2');
+    expect(jsObj.root.nest2['1000'].id1).to.equal('fourth string 1');
+    expect(jsObj.root.nest2['1000'].id2).to.equal('fourth string 2');
+  });
 
 });

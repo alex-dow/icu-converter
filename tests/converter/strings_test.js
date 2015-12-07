@@ -53,4 +53,11 @@ describe("Converter", function() {
     expect(jsObj.root.msgid).to.eql('"string"');
   });
 
+  it("handles strings that have numeric keys", function() {
+    var jsObj = getJsObj('tests/fixtures/strings/string8.txt');
+    expect(jsObj.root['1000']).to.eql('string');
+    expect(jsObj.root['1001']).to.eql('string2');
+  });
+
+
 });

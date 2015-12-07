@@ -1,0 +1,4 @@
+root {
+  1000 { "string" }
+  1001 { "string2" }
+}

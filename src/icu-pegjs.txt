@@ -2,7 +2,7 @@
 * PEG version of the ICU ResourceBundle formal format
 *
 * [1] http://source.icu-project.org/repos/icu/icuhtml/trunk/design/bnf_rb.txt
-* 
+*
 * Copyright (c) 2015 Alex Dowgailenko
 * Licensed under the MIT License
 * https://github.com/alex-dow/icu-converter/blog/master/LICENSE
@@ -14,15 +14,17 @@
   }
 
   function processTableWithKey(keyName, o) {
-      
+
       var obj = {};
       obj[keyName] = {};
+
+      console.log(o);
 
       for (var i = 0; i < o.length; i++) {
 
         if (typeof o[i] === "string") {
           obj[keyName] = o[i];
-        
+
         } else if (typeof o[i] === "number") {
           obj[keyName] = o[i];
         } else {
@@ -33,7 +35,7 @@
           }
         }
       }
-      
+
       return obj;
   }
 
@@ -89,7 +91,7 @@ resourceBundle
       return processTableWithKey(keyName, o);
     }
   / keyName:bundleName ":array" ws "{" ws o:(arrayFormat) ws "}" ws {
-      return processArrayWithKey(keyName, o);     
+      return processArrayWithKey(keyName, o);
     }
   / keyName:bundleName ":array" ws "{" ws o:(resourceBundle) ws "}" ws {
       return processArrayWithKeyOneItem(keyName, o);
@@ -126,7 +128,7 @@ resourceBundle
       if (!arrayType && o.length === 1) {
         o = o[0];
       }
-          
+
       return o;
     }
   / ":array" ws "{" ws o:(resourceBundle) ws "}" {
@@ -145,6 +147,28 @@ resourceBundle
       return parseInt(o);
     }
 
+  / keyName:bundleName ws "{" ws o:(arrayFormat) ws "}" ws {
+      var obj = {};
+      if (o.length === 1) {
+        o = o[0];
+      }
+      obj[keyName] = o;
+      return obj;
+    }
+
+  / keyName:bundleName ws "{" ws o:(resourceBundle)+ ws "}" ws {
+      return processTableWithKey(keyName, o);
+    }
+
+  / ws o:(integerFormat) ws {
+      return o;
+    }
+  / o:(integerFormat) {
+      return o;
+    }
+  / o:(stringFormat) {
+      return o;
+    }
 
   / "{" ws o:(integerFormat) ws "}" {
        return o;
@@ -159,29 +183,6 @@ resourceBundle
       return o;
     }
 
-
-  / ws o:(integerFormat) ws {
-      return o;
-    }
-  / o:(integerFormat) {
-      return o;
-    }
-  / o:(stringFormat) {
-      return o;
-    }
-
-  / keyName:bundleName ws "{" ws o:(arrayFormat) ws "}" ws {
-      var obj = {};
-      if (o.length === 1) {
-        o = o[0];
-      }
-      obj[keyName] = o;
-      return obj;
-    }
-
-  / keyName:bundleName ws "{" ws o:(resourceBundle)+ ws "}" ws {
-      return processTableWithKey(keyName, o);
-    }
 
 
 intvectorFormat
@@ -202,7 +203,7 @@ arrayFormat
      }
      return oa;
     }
-     
+
 stringFormat
   = o:('"' ws chars ws '"' ws)+ {
 
@@ -232,46 +233,46 @@ comment
 
 EOL
  = [\n\r]{1,2} / !.
-     
 
-bundleName 
+
+bundleName
   = o:invariantChars {
     return o.trim();
   }
 
-intType 
-  = ":int" 
+intType
+  = ":int"
   / ":integer"
 
-dataType 
-  = ":table" 
-  / ":array" 
-  / ":string" 
+dataType
+  = ":table"
+  / ":array"
+  / ":string"
   / intType
   / ":intvector"
 
-invariantChar 
-  = [A-Z] 
-  / [a-z] 
-  / [0-9] 
-  / ' ' 
-  / '"' 
-  / '%' 
-  / '&' 
-  / "'" 
-  / '(' 
-  / ')' 
+invariantChar
+  = [A-Z]
+  / [a-z]
+  / [0-9]
+  / ' '
+  / '"'
+  / '%'
+  / '&'
+  / "'"
+  / '('
+  / ')'
   / '*'
-  / '+' 
-  / ',' 
-  / '-' 
-  / '.' 
+  / '+'
+  / ','
+  / '-'
+  / '.'
   / '/'
-  / ';' 
-  / '<' 
-  / '=' 
-  / '>' 
-  / '?' 
+  / ';'
+  / '<'
+  / '='
+  / '>'
+  / '?'
   / '_'
   / '\\'
 
