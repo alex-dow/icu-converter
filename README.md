@@ -256,6 +256,7 @@ If you want to submit changes to the PEG file itself, then there must be extensi
 Please respect the `.editorconfig`, `.jshintrc`, and `.jscsrc` files.
 
 ## Release History
+* 2015-12-10  v0.1.5  Removed a left over console.log() call in the PegJS file
 * 2015-12-07  v0.1.4  Fix issue #27 - Using ints as key names
 * 2015-12-04  v0.1.2  Support for escape characters - issue #25
 * 2015-11-10  v0.1.1  Fix issue #22
