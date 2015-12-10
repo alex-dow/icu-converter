@@ -3090,8 +3090,6 @@ module.exports = (function() {
           var obj = {};
           obj[keyName] = {};
 
-          console.log(o);
-
           for (var i = 0; i < o.length; i++) {
 
             if (typeof o[i] === "string") {
