@@ -3,7 +3,8 @@
   "version": "0.1.5",
   "description": "Convert ICU resource bundles to other formats",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "build": "grunt"
   },
   "bin": {
     "icu-converter": "bin/icu-converter.js"
@@ -35,25 +36,29 @@
     "istanbul": "0.x.x"
   },
   "dependencies": {
-    "lodash": "3.9.3",
-    "pegjs": "0.8.0",
-    "commander": "2.8.1",
-    "properties": "1.2.1"
+    "commander": "^2.9.0",
+    "lodash": "^4.17.4",
+    "mkdirp": "^0.5.1",
+    "pegjs": "^0.10.0",
+    "properties": "^1.2.1"
   },
   "devDependencies": {
-    "grunt": "^0.4.0",
-    "grunt-peg": "1.5.0",
-    "grunt-mocha-test": "0.12.7",
-    "grunt-contrib-clean": "*",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-jscs": "^1.0.0",
-    "chai": "3.0.0",
-    "grunt-mocha-istanbul": "2.4.0",
-    "grunt-env": "0.4.4",
-    "grunt-sloccount": "*",
-    "jshint-jenkins-checkstyle-reporter": "0.1.2",
-    "sinon": "1.14.1",
-    "mockery": "1.4.0",
-    "rimraf": "2.4.0"
+    "chai": "^3.5.0",
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-env": "^0.4.4",
+    "grunt-jscs": "^3.0.1",
+    "grunt-mocha-istanbul": "^5.0.2",
+    "grunt-mocha-test": "^0.13.2",
+    "grunt-peg": "^2.0.1",
+    "grunt-sloccount": "^0.1.1",
+    "istanbul": "^0.4.5",
+    "jshint-jenkins-checkstyle-reporter": "^0.1.2",
+    "mocha": "^3.3.0",
+    "mockery": "^2.0.0",
+    "rimraf": "^2.6.1",
+    "sinon": "^2.2.0"
   }
 }
