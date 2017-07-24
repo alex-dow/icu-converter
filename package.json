@@ -4,7 +4,8 @@
   "description": "Convert ICU resource bundles to other formats",
   "scripts": {
     "test": "grunt test",
-    "build": "grunt"
+    "build": "grunt",
+    "clean": "grunt clean"
   },
   "bin": {
     "icu-converter": "bin/icu-converter.js"
